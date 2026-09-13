@@ -622,7 +622,7 @@
             box.classList.toggle('offline-visible',!open);
         }
 
-        async function handleMemberLogin() {
+        window.handleMemberLogin = async function handleMemberLogin() {
             const mEmail=document.getElementById('member-email-input').value.trim().toLowerCase();
             const mPass=document.getElementById('member-pass-input').value;
             if(!mEmail||!mPass){alert('اكتب إيميل العضو ورمز الدخول.');return;}
