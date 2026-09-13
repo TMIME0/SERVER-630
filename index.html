@@ -622,7 +622,7 @@
             box.classList.toggle('offline-visible',!open);
         }
 
-        window.handleMemberLogin = async function handleMemberLogin() {
+        async function handleMemberLogin() {
             const mEmail=document.getElementById('member-email-input').value.trim().toLowerCase();
             const mPass=document.getElementById('member-pass-input').value;
             if(!mEmail||!mPass){alert('اكتب إيميل العضو ورمز الدخول.');return;}
@@ -638,6 +638,9 @@
             if(error||!data.user){alert('الإيميل أو رمز الدخول غير صحيح!');return;}
             currentAuthUser=data.user; await loadMemberSession();
         }
+
+        // Make the handler explicitly available to the page buttons.
+        window.handleMemberLogin = handleMemberLogin;
 
         function formatDateTime(value) {
             if (!value) return 'لم يتم التعديل بعد';
@@ -1012,7 +1015,7 @@
  function bind(){
   var b=document.getElementById('admin-toggle-btn'), box=document.getElementById('admin-login-box');
   if(b&&box&&!b.dataset.bound){b.dataset.bound='1';b.addEventListener('click',function(){var o=getComputedStyle(box).display!=='none';box.style.setProperty('display',o?'none':'block','important');box.classList.toggle('offline-visible',!o);});}
-  var m=document.getElementById('member-login-btn'); if(m&&!m.dataset.bound){m.dataset.bound='1';m.addEventListener('click',function(){try{handleMemberLogin();}catch(e){alert(e.message);}});}
+  var m=document.getElementById('member-login-btn'); if(m&&!m.dataset.bound){m.dataset.bound='1';m.addEventListener('click',function(){try{window.handleMemberLogin();}catch(e){alert(e.message);}});}
   var a=document.getElementById('admin-login-btn'); if(a&&!a.dataset.bound){a.dataset.bound='1';a.addEventListener('click',function(){try{handleLogin();}catch(e){alert(e.message);}});}
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
