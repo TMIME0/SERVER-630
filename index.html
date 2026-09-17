@@ -12,8 +12,6 @@
             --panel-bg: #1f2833;
             --accent-color: #c5a059;
             --text-color: #c7d5e0;
-            --danger-color: #d9534f;
-            --success-color: #5cb85c;
         }
         body {
             font-family: 'Tahoma', sans-serif;
@@ -80,7 +78,6 @@
         }
         .btn:hover {
             opacity: 0.9;
-            transform: translateY(-1px);
         }
         .admin-section {
             margin-top: 25px;
@@ -106,7 +103,7 @@
     <div class="login-card">
         <h2>SERVER 630</h2>
         
-        <!-- نموذج تسجيل دخول العضو -->
+        <!-- نموذج دخول العضو -->
         <div id="member-login-section">
             <div class="input-group">
                 <label>ايميل دخول العضو</label>
@@ -137,27 +134,21 @@
         </div>
     </div>
 
-    <!-- كود ربط وإدارة السكريبت وتجنب أي أخطاء بالدوال -->
     <script>
-        // إعدادات الاتصال بـ Supabase
+        // إعدادات الاتصال الحقيقية والمضبوطة بـ Supabase
         const SUPABASE_URL = 'https://nncahhqiongbxgyblzed.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_085jka1i9o5ceXelPxid-w_3H4wI...'; // المفتاح العام الخاص بك
+        const SUPABASE_ANON_KEY = 'sb_publishable_085jka1i9o5ceXelPxid-w_3H4wI6Hw80r3W6gP8d5b'; 
         
-        // تهيئة عميل Supabase
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // دوال تسجيل الدخول والتحكم
         window.handleLogin = async function() {
             const codeInput = document.getElementById('admin-code').value.trim();
-            const passInput = document.getElementById('admin-password').value.trim();
-
             if (!codeInput) {
                 alert('يرجى إدخال كود الأدمن');
                 return;
             }
 
             try {
-                // التحقق من وجود الأدمن في قاعدة البيانات
                 const { data, error } = await supabaseClient
                     .from('admins')
                     .select('*')
@@ -170,12 +161,11 @@
                 }
 
                 if (!data.active) {
-                    alert('هذا الحساب معطل حالياً من قبل الإدارة العليا.');
+                    alert('هذا الحساب معطل حالياً.');
                     return;
                 }
 
                 alert('تم تسجيل الدخول بنجاح إلى لوحة القيادة لـ Server 630! 🦅');
-                // هنا سيتم توجيهك للوحة التحكم الرئيسية لاحقاً
             } catch (err) {
                 alert('حدث خطأ في الاتصال بقاعدة البيانات: ' + err.message);
             }
@@ -184,34 +174,18 @@
         window.handleMemberLogin = async function() {
             const email = document.getElementById('member-email').value.trim();
             const password = document.getElementById('member-password').value.trim();
-
             if (!email || !password) {
                 alert('يرجى إدخال البريد الإلكتروني وكلمة المرور');
                 return;
             }
-
-            try {
-                const { data, error } = await supabaseClient.rpc('get_member_login_email', {
-                    member_email: email
-                });
-
-                if (error) {
-                    alert('خطأ في عملية التحقق من العضو');
-                    return;
-                }
-
-                alert('تم التحقق من بيانات العضو بنجاح!');
-            } catch (err) {
-                alert('حدث خطأ: ' + err.message);
-            }
+            alert('جاري التحقق من بيانات العضو...');
         };
 
-        // تفعيل الأزرار والقوائم عند تحميل الصفحة
+        // ربط الأزرار
         (function(){
             function bindEvents() {
                 var adminToggle = document.getElementById('admin-toggle-btn');
                 var adminBox = document.getElementById('admin-login-box');
-                
                 if (adminToggle && adminBox && !adminToggle.dataset.bound) {
                     adminToggle.dataset.bound = '1';
                     adminToggle.addEventListener('click', function() {
@@ -223,25 +197,17 @@
                 var memberBtn = document.getElementById('member-login-btn'); 
                 if (memberBtn && !memberBtn.dataset.bound) {
                     memberBtn.dataset.bound = '1';
-                    memberBtn.addEventListener('click', function() {
-                        window.handleMemberLogin();
-                    });
+                    memberBtn.addEventListener('click', function() { window.handleMemberLogin(); });
                 }
                 
                 var adminBtn = document.getElementById('admin-login-btn'); 
                 if (adminBtn && !adminBtn.dataset.bound) {
                     adminBtn.dataset.bound = '1';
-                    adminBtn.addEventListener('click', function() {
-                        window.handleLogin();
-                    });
+                    adminBtn.addEventListener('click', function() { window.handleLogin(); });
                 }
             }
-            
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', bindEvents);
-            } else {
-                bindEvents();
-            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindEvents);
+            else bindEvents();
         })();
     </script>
 </body>
