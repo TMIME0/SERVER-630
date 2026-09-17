@@ -27,7 +27,6 @@
             backdrop-filter: blur(8px);
         }
 
-        /* شبكة الخطوط الحمراء الحية والمتشابكة في خلفية النظام كله */
         .cyber-grid-container {
             position: fixed;
             inset: 0;
@@ -36,7 +35,6 @@
             overflow: hidden;
         }
 
-        /* شبكة مربعات متوهجة نابضة */
         .matrix-grid {
             position: absolute;
             inset: -50%;
@@ -55,7 +53,6 @@
             100% { transform: perspective(500px) rotateX(60deg) translateY(40px); }
         }
 
-        /* خطوط ليزر عرضية وطولية حية ومسرعة */
         .laser-line-h {
             position: absolute;
             left: 0;
@@ -88,7 +85,6 @@
             100% { left: 110%; opacity: 0; }
         }
 
-        /* جسيمات متطايرة حية في الخلفية */
         .energy-particle {
             position: absolute;
             width: 4px;
@@ -105,7 +101,6 @@
             100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
         }
 
-        /* الإطار المتحرك الحي حول مربع تسجيل الدخول */
         .neon-border-box {
             position: relative;
             border-radius: 1.7rem;
@@ -146,7 +141,6 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4 full-bg-image">
 
-    <!-- خلفية الشبكة والخطوط الحمراء الحية والمتشابكة لكل النظام -->
     <div class="cyber-grid-container">
         <div class="matrix-grid"></div>
         <div class="laser-line-h" style="animation-delay: 0s;"></div>
@@ -155,7 +149,6 @@
         <div class="laser-line-v" style="animation-delay: 1s;"></div>
         <div class="laser-line-v" style="animation-delay: 3s;"></div>
         
-        <!-- جسيمات طاقة متحركة عشوائية -->
         <div class="energy-particle" style="left: 10%; animation-duration: 4s; animation-delay: 0s;"></div>
         <div class="energy-particle" style="left: 30%; animation-duration: 6s; animation-delay: 1.5s;"></div>
         <div class="energy-particle" style="left: 50%; animation-duration: 5s; animation-delay: 0.5s;"></div>
@@ -163,10 +156,8 @@
         <div class="energy-particle" style="left: 90%; animation-duration: 4.5s; animation-delay: 1s;"></div>
     </div>
 
-    <div id="sync-loading" class="hidden" style="display:none!important;">
-    </div>
+    <div id="sync-loading" class="hidden" style="display:none!important;"></div>
 
-    <!-- شاشة تسجيل الدخول -->
     <div id="login-screen" class="fixed inset-0 z-20 flex items-center justify-center p-4 overflow-y-auto">
         <div class="neon-border-box w-full max-w-md shadow-2xl">
             <div class="slate-card neon-inner-content p-8 text-center">
@@ -208,7 +199,6 @@
         </div>
     </div>
 
-    <!-- لوحة التحكم الرئيسية -->
     <div id="dashboard" class="hidden w-full max-w-7xl mx-auto space-y-6 my-8 z-20 relative">
         <header class="slate-card p-6 rounded-3xl flex flex-col md:flex-row justify-between items-center border gold-border gap-4">
             <div>
@@ -263,7 +253,7 @@
 
         <section class="slate-card p-6 rounded-3xl border gold-border space-y-4">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <h3 id="table-section-title" class="text-xl font-bold gold-text">سجل الإمداد وقلاع الأعضاء (75 قلعة)</h3>
+                <h3 id="table-section-title" class="text-xl font-bold gold-text">سجل الإمداد وقلاع الأعضاء</h3>
                 <div id="search-box-container" class="w-full md:w-72">
                     <input type="text" id="search-input" onkeyup="filterTable()" placeholder="ابحث عن اسم القلعة..." 
                         class="w-full px-4 py-2 rounded-xl bg-[#121217] border border-gray-700 text-sm text-white focus:outline-none focus:border-[#d4af37]">
@@ -287,7 +277,6 @@
         </section>
     </div>
 
-    <!-- نافذة إعدادات الأعضاء -->
     <div id="settings-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
         <div class="slate-card p-6 rounded-3xl border gold-border w-full max-w-4xl max-h-[85vh] overflow-y-auto space-y-4">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
@@ -303,7 +292,6 @@
         </div>
     </div>
 
-    <!-- نافذة الأدمنية -->
     <div id="admins-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
         <div class="slate-card p-6 rounded-3xl border gold-border w-full max-w-3xl max-h-[85vh] overflow-y-auto space-y-4">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
@@ -320,25 +308,12 @@
     </div>
 
     <script>
-        // ============================
-        // SERVER 630 - Supabase
-        // ضع بيانات مشروعك هنا فقط.
-        // استخدم Publishable/Anon key وليس Service Role Key.
-        // ============================
         const SUPABASE_URL = "https://nncahhqiongbxgyblzed.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_08Sjka8i9o5ceXmlPsi6-w_3H4wIljf";
         const createClient = (window.supabase && typeof window.supabase.createClient === "function") ? window.supabase.createClient : null;
         let supabase = null;
 
-        // مهم: واجهة الدخول لا تنتظر السيرفر. إذا كانت بيانات Supabase غير مكتملة
-        // يبقى الموقع مفتوحاً فوراً بدل أن يعلق على "جاري تحميل بيانات السيرفر".
-        const OFFLINE_MODE = !SUPABASE_URL || SUPABASE_URL === "YOUR_SUPABASE_URL" || !SUPABASE_ANON_KEY || SUPABASE_ANON_KEY === "YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY";
-
-        const supabaseConfigured =
-            SUPABASE_URL &&
-            SUPABASE_ANON_KEY &&
-            SUPABASE_URL !== "YOUR_SUPABASE_URL" &&
-            SUPABASE_ANON_KEY !== "YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY";
+        const supabaseConfigured = SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_URL !== "YOUR_SUPABASE_URL";
 
         if (supabaseConfigured && createClient) {
             try {
@@ -354,8 +329,6 @@
         let membersData = [];
         let currentAuthUser = null;
 
-        // افتح واجهة الدخول فوراً. المزامنة تتم بالخلفية فقط.
-        initDefaultMembers();
         hideBlockingLoader();
         checkAndLoadData();
 
@@ -368,14 +341,10 @@
         }
 
         async function checkAndLoadData() {
-            // لا يوجد انتظار ولا شاشة تحميل للزائر.
             if (!supabase) return;
-
             try {
                 const { data: { session } } = await supabase.auth.getSession();
                 currentAuthUser = session?.user || null;
-
-                // الزائر يبقى على شاشة الدخول ولا يحتاج تحميل كل بيانات الأعضاء.
                 if (!currentAuthUser) return;
 
                 const role = currentAuthUser.user_metadata?.role;
@@ -386,16 +355,12 @@
                 }
             } catch (e) {
                 console.error('Startup session check error:', e);
-                // لا نعرض شاشة تحميل ولا نمنع المستخدم من رؤية صفحة الدخول.
             }
         }
 
         async function loadFromCloud() {
             const statusDiv = document.getElementById('cloud-status');
-            if (!supabase) {
-                initDefaultMembers();
-                return;
-            }
+            if (!supabase) return;
             try {
                 const { data, error } = await supabase
                     .from('members')
@@ -406,15 +371,13 @@
 
                 membersData = (data || []).map(mapMemberFromDb);
 
-                if (!membersData.length) initDefaultMembers();
-
                 if (statusDiv) {
                     statusDiv.innerText = "☁️ متصل بنجاح";
                     statusDiv.className = "text-xs text-green-400 bg-green-950/40 px-3 py-1.5 rounded-xl border border-green-800 font-bold";
                 }
             } catch (e) {
                 console.error('Supabase load error:', e);
-                initDefaultMembers();
+                membersData = [];
                 if (statusDiv) {
                     statusDiv.innerText = "⚠️ تعذر الاتصال بالسيرفر";
                     statusDiv.className = "text-xs text-yellow-400 bg-yellow-950/40 px-3 py-1.5 rounded-xl border border-yellow-800 font-bold";
@@ -426,6 +389,7 @@
                     loadingScreen.style.display = 'none';
                 }
                 updateTotals();
+                initMembersTable();
             }
         }
 
@@ -435,7 +399,6 @@
                 castleName: m.castle_name || '',
                 castleType: m.castle_type || 'dual',
                 email: m.email || '',
-                // لا نحمل كلمة مرور الموقع إلى المتصفح.
                 pass: '',
                 gameEmail: m.game_email || '',
                 gamePass: m.game_pass || '',
@@ -528,8 +491,7 @@
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
             document.getElementById('user-info').innerText = currentAdmin.name;
-            document.getElementById('admin-role-title').innerText =
-                currentAdmin.isMaster ? 'صلاحيات كاملة للأدمن العام' : 'صلاحيات اطلاع وتعديل';
+            document.getElementById('admin-role-title').innerText = currentAdmin.isMaster ? 'صلاحيات كاملة للأدمن العام' : 'صلاحيات اطلاع وتعديل';
 
             if (currentAdmin.isMaster) {
                 document.getElementById('master-admin-settings-container').classList.remove('hidden');
@@ -554,92 +516,46 @@
             return true;
         }
 
-        async function saveChanges() {
-            if (!supabase) return false;
-            const statusDiv = document.getElementById('cloud-status');
-            if (statusDiv) {
-                statusDiv.innerText = "🔄 جاري الحفظ ...";
-                statusDiv.className = "text-xs text-yellow-400 bg-yellow-950/40 px-3 py-1.5 rounded-xl border border-yellow-800 font-bold";
-            }
-
-            // الحفظ الجماعي يستخدم upsert فقط عند الحاجة؛ لا يوجد POST لكل الـ75 عضواً.
-            // هذا المسار مخصص لإعدادات عامة/ترحيل، أما حفظ عضو فيستخدم saveMemberById.
-            try {
-                const rows = membersData.map(mapMemberToDb);
-                const { error } = await supabase.from('members').upsert(rows, { onConflict: 'id' });
-                if (error) throw error;
-
-                if (statusDiv) {
-                    statusDiv.innerText = "☁️ تم الحفظ بنجاح";
-                    statusDiv.className = "text-xs text-green-400 bg-green-950/40 px-3 py-1.5 rounded-xl border border-green-800 font-bold";
-                }
-                return true;
-            } catch (e) {
-                console.error(e);
-                if (statusDiv) {
-                    statusDiv.innerText = "❌ فشل الحفظ";
-                    statusDiv.className = "text-xs text-red-400 bg-red-950/40 px-3 py-1.5 rounded-xl border border-red-800 font-bold";
-                }
-                return false;
-            }
-        }
-
         async function handleLogin() {
             const code = document.getElementById('login-code').value.trim();
             const pass = document.getElementById('login-pass').value;
             if (!code || !pass) { alert('اكتب كود الأدمن والرمز.'); return; }
-            if (OFFLINE_MODE || !supabase) {
-                const localAdmins = {
-                    '1G630': {name:'الأدمن الأول (مدير عام)', pass:'Tmime9090', isMaster:true, active:true, showGameCredentials:true},
-                    '2G630': {name:'الأدمن 2', pass:'pass2', isMaster:false, active:true, showGameCredentials:true},
-                    '3G630': {name:'الأدمن 3', pass:'pass3', isMaster:false, active:true, showGameCredentials:true},
-                    '4G630': {name:'الأدمن 4', pass:'pass4', isMaster:false, active:true, showGameCredentials:true},
-                    '5G630': {name:'الأدمن 5', pass:'pass5', isMaster:false, active:true, showGameCredentials:true}
-                };
-                const adm=localAdmins[code];
-                if(!adm || adm.pass!==pass || adm.active===false){ alert('كود أو رمز الأدمن غير صحيح!'); return; }
-                currentAdmin={id:code,code,name:adm.name,isMaster:adm.isMaster,active:true,showGameCredentials:adm.showGameCredentials,lastSeen:new Date().toISOString()};
-                admins=localAdmins; loggedInMemberId=null; currentAuthUser=null;
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('user-info').innerText=currentAdmin.name;
-                document.getElementById('admin-role-title').innerText=currentAdmin.isMaster?'صلاحيات كاملة للأدمن العام':'صلاحيات اطلاع وتعديل';
-                if(currentAdmin.isMaster) document.getElementById('master-admin-settings-container').classList.remove('hidden');
-                initMembersTable();
-                return;
-            }
-            const {data:authEmail,error:lookupError}=await supabase.rpc('get_admin_login_email',{p_code:code});
-            if(lookupError||!authEmail){console.error(lookupError);alert('كود أو رمز الأدمن غير صحيح!');return;}
-            const {data,error}=await supabase.auth.signInWithPassword({email:authEmail,password:pass});
-            if(error||!data.user){alert('كود أو رمز الأدمن غير صحيح!');return;}
-            currentAuthUser=data.user; await loadAdminSession();
+            if (!supabase) { alert('قاعدة البيانات غير متصلة.'); return; }
+            
+            const {data:authEmail, error:lookupError} = await supabase.rpc('get_admin_login_email', {p_code: code});
+            if (lookupError || !authEmail) { alert('كود أو رمز الأدمن غير صحيح!'); return; }
+            
+            const {data, error} = await supabase.auth.signInWithPassword({email: authEmail, password: pass});
+            if (error || !data.user) { alert('كود أو رمز الأدمن غير صحيح!'); return; }
+            
+            currentAuthUser = data.user;
+            await loadAdminSession();
         }
 
         function toggleAdminLogin() {
-            const box=document.getElementById('admin-login-box'); if(!box)return;
-            const open=getComputedStyle(box).display!=='none';
-            box.style.setProperty('display',open?'none':'block','important');
-            box.classList.toggle('offline-visible',!open);
+            const box = document.getElementById('admin-login-box');
+            if (!box) return;
+            const open = getComputedStyle(box).display !== 'none';
+            box.style.setProperty('display', open ? 'none' : 'block', 'important');
+            box.classList.toggle('offline-visible', !open);
         }
 
         async function handleMemberLogin() {
-            const mEmail=document.getElementById('member-email-input').value.trim().toLowerCase();
-            const mPass=document.getElementById('member-pass-input').value;
-            if(!mEmail||!mPass){alert('اكتب إيميل العضو ورمز الدخول.');return;}
-            if(OFFLINE_MODE||!supabase){
-                initDefaultMembers();
-                const member=membersData.find(m=>(m.email||'').toLowerCase()===mEmail&&m.pass===mPass);
-                if(!member){alert('الإيميل أو رمز الدخول غير صحيح!');return;}
-                loggedInMemberId=member.id; currentAdmin=null; currentAuthUser=null; showMemberDashboard(); return;
-            }
-            const {data:authEmail,error:lookupError}=await supabase.rpc('get_member_login_email',{p_login:mEmail,p_password:mPass});
-            if(lookupError||!authEmail){alert('الإيميل أو رمز الدخول غير صحيح!');return;}
-            const {data,error}=await supabase.auth.signInWithPassword({email:authEmail,password:mPass});
-            if(error||!data.user){alert('الإيميل أو رمز الدخول غير صحيح!');return;}
-            currentAuthUser=data.user; await loadMemberSession();
+            const mEmail = document.getElementById('member-email-input').value.trim().toLowerCase();
+            const mPass = document.getElementById('member-pass-input').value;
+            if (!mEmail || !mPass) { alert('اكتب إيميل العضو ورمز الدخول.'); return; }
+            if (!supabase) { alert('قاعدة البيانات غير متصلة.'); return; }
+
+            const {data:authEmail, error:lookupError} = await supabase.rpc('get_member_login_email', {p_login: mEmail, p_password: mPass});
+            if (lookupError || !authEmail) { alert('الإيميل أو رمز الدخول غير صحيح!'); return; }
+
+            const {data, error} = await supabase.auth.signInWithPassword({email: authEmail, password: mPass});
+            if (error || !data.user) { alert('الإيميل أو رمز الدخول غير صحيح!'); return; }
+
+            currentAuthUser = data.user;
+            await loadMemberSession();
         }
 
-        // Make the handler explicitly available to the page buttons.
         window.handleMemberLogin = handleMemberLogin;
 
         function formatDateTime(value) {
@@ -649,38 +565,11 @@
             return d.toLocaleDateString('ar-IQ') + ' - ' + d.toLocaleTimeString('ar-IQ');
         }
 
-        function initDefaultMembers() {
-            membersData = [];
-            for (let i = 1; i <= 75; i++) {
-                membersData.push({
-                    id: i,
-                    castleName: i === 1 ? 'قلعة فالكون' : '',
-                    castleType: 'dual',
-                    email: `member${i}@alliance.com`,
-                    pass: `pass${i}`,
-                    gameEmail: `game${i}@game.com`,
-                    gamePass: `gpass${i}`,
-                    infantryArmored: 0,
-                    archerArmored: 0,
-                    infantrySuper: 0,
-                    archerSuper: 0,
-                    meteor: 0,
-                    lastMemberUpdate: 'لم يتم التعديل بعد'
-                });
-            }
-            updateTotals();
-        }
-
         function showMemberDashboard() {
             const member = membersData.find(m => m.id === loggedInMemberId);
             if (!member) return;
 
             document.getElementById('login-screen').classList.add('hidden');
-            const loadingScreen = document.getElementById('sync-loading');
-            if (loadingScreen) {
-                loadingScreen.classList.add('hidden');
-                loadingScreen.style.display = 'none';
-            }
             document.getElementById('dashboard').classList.remove('hidden');
             
             const castleDisplayName = member.castleName ? member.castleName : `قلعة رقم ${member.id}`;
@@ -750,40 +639,24 @@
         }
 
         async function saveAllMembersChanges() {
-            // البريد وكلمة مرور الدخول أصبحا تحت Supabase Auth.
-            // لا نخزن كلمات المرور في جدول members ولا نرسلها للمتصفح.
-            alert('إدارة بريد/رمز دخول الأعضاء أصبحت عبر Supabase Auth. بيانات العضو نفسها تحفظ من هنا.');
+            alert('إدارة بريد/رمز دخول الأعضاء أصبحت عبر Supabase Auth.');
         }
 
         async function saveAdminsChanges() {
-            if (!supabase) {
-                alert('Supabase غير مربوط بعد.');
-                return;
-            }
+            if (!supabase) return;
             for (const code of Object.keys(admins)) {
                 if (code === '1G630') continue;
-
                 const nameInput = document.getElementById(`adm-name-${code}`);
                 const activeCheckbox = document.getElementById(`adm-active-${code}`);
                 const showCredCheckbox = document.getElementById(`adm-showcred-${code}`);
                 const adm = admins[code];
 
-                const { error } = await supabase
-                    .from('admins')
-                    .update({
-                        name: nameInput ? nameInput.value.trim() : adm.name,
-                        active: activeCheckbox ? activeCheckbox.checked : adm.active,
-                        show_game_credentials: showCredCheckbox ? showCredCheckbox.checked : adm.showGameCredentials
-                    })
-                    .eq('code', code);
-
-                if (error) {
-                    console.error(error);
-                    alert('حدث خطأ أثناء حفظ صلاحيات الأدمن.');
-                    return;
-                }
+                await supabase.from('admins').update({
+                    name: nameInput ? nameInput.value.trim() : adm.name,
+                    active: activeCheckbox ? activeCheckbox.checked : adm.active,
+                    show_game_credentials: showCredCheckbox ? showCredCheckbox.checked : adm.showGameCredentials
+                }).eq('code', code);
             }
-
             alert('تم حفظ إعدادات الأدمنية بنجاح!');
             toggleAdminsModal();
         }
@@ -794,12 +667,6 @@
             sessionStorage.clear();
             document.getElementById('dashboard').classList.add('hidden');
             document.getElementById('login-screen').classList.remove('hidden');
-            const adminBox = document.getElementById('admin-login-box');
-            if (adminBox) {
-                adminBox.classList.add('hidden');
-                adminBox.classList.remove('offline-visible');
-                adminBox.style.setProperty('display','none','important');
-            }
             loggedInMemberId = null;
             currentAdmin = null;
             membersData = [];
@@ -827,7 +694,7 @@
                         <div class="font-bold text-white text-sm mb-1">قلعتك الخاصة (${m.castleName || 'بدون اسم'})</div>
                         <div class="bg-[#121217] p-2.5 rounded-xl border border-gray-800 space-y-2">
                             <div>
-                                <span class="text-[10px] text-gray-400 block mb-1">إيميل القلعة (للاطلاع فقط)</span>
+                                <span class="text-[10px] text-gray-400 block mb-1">إيميل القلعة</span>
                                 <input type="text" value="${m.gameEmail || ''}" readonly class="w-full px-2 py-1 bg-gray-900 border border-gray-800 rounded-lg text-xs text-gray-400 cursor-not-allowed">
                             </div>
                             <div>
@@ -862,7 +729,7 @@
                     columnContent = `
                         <div class="flex justify-between items-center mb-1">
                             <span class="font-bold text-white text-sm">عضو رقم ${m.id}</span>
-                            <span class="text-[10px] text-gray-400" title="وقت آخر تحديث للبيانات">🕒 ${formatDateTime(m.lastMemberUpdate)}</span>
+                            <span class="text-[10px] text-gray-400">🕒 ${formatDateTime(m.lastMemberUpdate)}</span>
                         </div>
                         <div class="space-y-1.5">
                             <input type="text" placeholder="اسم القلعة" value="${m.castleName || ''}" class="castle-name-input px-3 py-1.5 bg-[#121217] border border-gray-700 rounded-xl text-xs text-white w-full font-bold" oninput="updateCastleNameLocal(${m.id}, this.value)">
@@ -925,24 +792,18 @@
 
         function updateMemberGameDataLocal(id, field, val) {
             const member = membersData.find(m => m.id === id);
-            if (member) {
-                member[field] = val;
-            }
+            if (member) member[field] = val;
         }
 
         function updateCastleNameLocal(id, val) {
             const member = membersData.find(m => m.id === id);
-            if (member) {
-                member.castleName = val;
-            }
+            if (member) member.castleName = val;
         }
 
         function updateCastleTypeLocal(id, val) {
             const member = membersData.find(m => m.id === id);
             if (member) {
                 member.castleType = val;
-                // تغيير نوع القلعة يغيّر طريقة العرض فقط، ولا يمسح بيانات أي نوع آخر.
-                // بيانات المشاة والرماة محفوظة دائماً بشكل مستقل داخل نفس سجل العضو.
                 updateTotals();
                 initMembersTable();
             }
@@ -951,40 +812,31 @@
         async function saveSingleMemberData() {
             const member = membersData.find(m => m.id === loggedInMemberId);
             if (!member) return;
-
             member.lastMemberUpdate = new Date().toISOString();
             const ok = await saveMemberById(member.id);
-
             if (ok) {
                 initMembersTable();
                 alert('تم حفظ بيانات قلعتك بنجاح في Supabase!');
             } else {
-                alert('فشل حفظ البيانات. تأكد من الاتصال والصلاحيات.');
+                alert('فشل حفظ البيانات.');
             }
         }
 
         async function saveAdminEditedMember(id) {
             const member = membersData.find(m => m.id === id);
             if (!member) return;
-
             member.lastMemberUpdate = new Date().toISOString();
             const ok = await saveMemberById(id);
-
             if (ok) {
                 initMembersTable();
-                alert(`تم حفظ وتحديث بيانات العضو رقم ${id} بنجاح في Supabase!`);
+                alert(`تم حفظ وتحديث بيانات العضو رقم ${id} بنجاح!`);
             } else {
                 alert(`فشل حفظ بيانات العضو رقم ${id}.`);
             }
         }
 
         function updateTotals() {
-            let tInfantryArmored = 0;
-            let tArcherArmored = 0;
-            let tInfantrySuper = 0;
-            let tArcherSuper = 0;
-            let tMeteor = 0;
-
+            let tInfantryArmored = 0, tArcherArmored = 0, tInfantrySuper = 0, tArcherSuper = 0, tMeteor = 0;
             membersData.forEach(m => {
                 tInfantryArmored += Number(m.infantryArmored || 0);
                 tArcherArmored += Number(m.archerArmored || 0);
@@ -992,7 +844,6 @@
                 tArcherSuper += Number(m.archerSuper || 0);
                 tMeteor += Number(m.meteor || 0);
             });
-
             document.getElementById('total-armored-infantry').innerText = tInfantryArmored.toLocaleString();
             document.getElementById('total-armored-archers').innerText = tArcherArmored.toLocaleString();
             document.getElementById('total-super-infantry').innerText = tInfantrySuper.toLocaleString();
@@ -1004,22 +855,22 @@
             const query = document.getElementById('search-input').value.toLowerCase().trim();
             document.querySelectorAll('#members-table-body tr').forEach(row => {
                 const TheNameInput = row.querySelector('.castle-name-input');
-                if(TheNameInput) {
+                if (TheNameInput) {
                     row.style.display = TheNameInput.value.toLowerCase().includes(query) ? '' : 'none';
                 }
             });
         }
     </script>
-<script>
-(function(){
- function bind(){
-  var b=document.getElementById('admin-toggle-btn'), box=document.getElementById('admin-login-box');
-  if(b&&box&&!b.dataset.bound){b.dataset.bound='1';b.addEventListener('click',function(){var o=getComputedStyle(box).display!=='none';box.style.setProperty('display',o?'none':'block','important');box.classList.toggle('offline-visible',!o);});}
-  var m=document.getElementById('member-login-btn'); if(m&&!m.dataset.bound){m.dataset.bound='1';m.addEventListener('click',function(){try{window.handleMemberLogin();}catch(e){alert(e.message);}});}
-  var a=document.getElementById('admin-login-btn'); if(a&&!a.dataset.bound){a.dataset.bound='1';a.addEventListener('click',function(){try{handleLogin();}catch(e){alert(e.message);}});}
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
-})();
-</script>
+    <script>
+    (function(){
+     function bind(){
+      var b=document.getElementById('admin-toggle-btn'), box=document.getElementById('admin-login-box');
+      if(b&&box&&!b.dataset.bound){b.dataset.bound='1';b.addEventListener('click',function(){var o=getComputedStyle(box).display!=='none';box.style.setProperty('display',o?'none':'block','important');box.classList.toggle('offline-visible',!o);});}
+      var m=document.getElementById('member-login-btn'); if(m&&!m.dataset.bound){m.dataset.bound='1';m.addEventListener('click',function(){try{window.handleMemberLogin();}catch(e){alert(e.message);}});}
+      var a=document.getElementById('admin-login-btn'); if(a&&!a.dataset.bound){a.dataset.bound='1';a.addEventListener('click',function(){try{handleLogin();}catch(e){alert(e.message);}});}
+     }
+     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+    })();
+    </script>
 </body>
 </html>
