@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Server 630 - نظام الإمداد والسيطرة</title>
-    <!-- مكتبة Supabase للاتصال بقاعدة البيانات -->
+    <!-- مكتبة Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
@@ -134,8 +134,8 @@
         </div>
     </div>
 
+    <!-- سكربت الاتصال والتحكم -->
     <script>
-        // إعدادات الاتصال الحقيقية والمضبوطة بـ Supabase
         const SUPABASE_URL = 'https://nncahhqiongbxgyblzed.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_085jka1i9o5ceXelPxid-w_3H4wI6Hw80r3W6gP8d5b'; 
         
@@ -172,12 +172,6 @@
         };
 
         window.handleMemberLogin = async function() {
-            const email = document.getElementById('member-email').value.trim();
-            const password = document.getElementById('member-password').value.trim();
-            if (!email || !password) {
-                alert('يرجى إدخال البريد الإلكتروني وكلمة المرور');
-                return;
-            }
             alert('جاري التحقق من بيانات العضو...');
         };
 
