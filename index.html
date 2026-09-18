@@ -1184,7 +1184,7 @@ input:focus,select:focus,textarea:focus{
 <div id="maintenanceAlerts"></div>
 <div class="form-grid">
 <div><label>بحث:</label><input id="maintenanceSearchInput" type="text" oninput="renderMaintenanceTable()" placeholder="رقم وصل الصيانة / الهاتف / اسم الزبون / IMEI"></div>
-<div><label>الحالة:</label><select id="maintenanceStatusFilter" onchange="renderMaintenanceTable()"><option value="">كل الحالات</option><option>استلام للصيانة</option><option>بانتظار الإرسال للوكالة</option><option>تم التسليم للوكالة</option><option>لدى الوكالة</option><option>رد الوكالة</option><option>تم الإصلاح</option><option>تعذر أو رفض الإصلاح</option><option>بانتظار موافقة الزبون</option><option>جاهز للتسليم</option><option>تم التسليم</option></select></div>
+<div><label>الحالة:</label><select id="maintenanceStatusFilter" onchange="renderMaintenanceTable()"><option value="">كل الحالات</option><option>استلام للصيانة</option><option>بانتظار الإرسال للوكالة</option><option>تم التسليم للوكالة</option><option>لدى الوكالة</option><option>رد الوكالة</option><option>تم الإصلاح</option><option>تعذر أو رفض الإصلاح</option><option>جاهز للتسليم</option><option>تم التسليم</option></select></div>
 </div>
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px;">
 <button class="btn-custom" style="width:auto;background:linear-gradient(135deg,#3498db,#2471a3);" onclick="openMaintenanceIntake()"><i class="fa-solid fa-plus"></i> استلام للصيانة</button>
@@ -1652,9 +1652,8 @@ input:focus,select:focus,textarea:focus{
 <div class="total-box" style="display:block; text-align:center;"><div style="font-size:12px; color:var(--text-muted);">إجمالي المصروف على الأجهزة</div><div id="finSpentDevices" style="font-size:18px; color:var(--accent-blue); font-weight:900;">0 د.ع</div></div>
 <div class="total-box" style="display:block; text-align:center;"><div style="font-size:12px; color:var(--text-muted);">إجمالي المصروف على الاكسسوارات</div><div id="finSpentAccessories" style="font-size:18px; color:var(--accent-blue); font-weight:900;">0 د.ع</div></div>
 <div class="total-box" style="display:block; text-align:center;"><div style="font-size:12px; color:var(--text-muted);">إجمالي الأرباح الصافية</div><div id="finTotalProfit" style="font-size:18px; color:var(--accent-green); font-weight:900;">0 د.ع</div></div>
-<div class="total-box" style="display:block; text-align:center;"><div style="font-size:12px; color:var(--text-muted);">أرباح اليوم</div><div id="finDailyProfit" style="font-size:18px; color:var(--accent-green); font-weight:900;">0 د.ع</div><small style="color:var(--text-muted);">تتجدد تلقائياً بعد منتصف الليل</small></div>
+<div class="total-box" style="display:block; text-align:center;"><div style="font-size:12px; color:var(--text-muted);">أرباح اليوم</div><div id="finDailyProfit" style="font-size:18px; color:var(--accent-green); font-weight:900;">0 د.ع</div><small style="color:var(--text-muted);">يتصفر عند إصدار تقرير الأرباح والمبيعات اليومية</small></div>
 <div class="total-box" style="display:block; text-align:center;"><div style="font-size:12px; color:var(--text-muted);">أرباح الدورة الشهرية</div><div id="finMonthlyProfit" style="font-size:18px; color:var(--accent-green); font-weight:900;">0 د.ع</div><small style="color:var(--text-muted);">من يوم 1 إلى آخر يوم في الشهر</small></div>
-<div class="total-box" style="display:block; text-align:center;"><div style="font-size:12px; color:var(--text-muted);">صافي ربح الصيانة الشهري</div><div id="finMonthlyMaintenanceProfit" style="font-size:18px; color:var(--accent-green); font-weight:900;">0 د.ع</div></div>
 <div class="total-box" style="display:block; text-align:center;"><div style="font-size:12px; color:var(--text-muted);">مبالغ ضمان VIP المستحصلة</div><div id="finVipCollected" style="font-size:18px; color:var(--accent-red); font-weight:900;">0 د.ع</div></div>
 <div class="total-box" style="display:block; text-align:center;"><div style="font-size:12px; color:var(--text-muted);">أكثر جهاز ربحاً</div><div id="finBestDevice" style="font-size:15px; color:#fff; font-weight:700;">-</div></div>
 <div class="total-box" style="display:block; text-align:center;"><div style="font-size:12px; color:var(--text-muted);">أكثر اكسسوار ربحاً</div><div id="finBestAccessory" style="font-size:15px; color:#fff; font-weight:700;">-</div></div>
@@ -1724,7 +1723,13 @@ input:focus,select:focus,textarea:focus{
 <section class="section-content" id="tabAdminUsers">
 <div class="card">
 <h2><i class="fa-solid fa-users-gear"></i> إدارة مستخدمي النظام والصلاحيات</h2>
-<div id="salesNamesManager" style="display:none; margin:12px 0 20px; padding:14px; border:1px solid var(--border-color); border-radius:var(--radius-md); background:rgba(20,20,28,.55);">
+
+<!-- زر أسماء موظفي المبيعات للفواتير في أعلى القائمة -->
+<button id="salesNamesToggleBtn" class="btn-custom" type="button" onclick="toggleSalesNamesManager()" style="width:auto;padding:10px 22px;margin:0 0 14px;">
+  <i class="fa-solid fa-id-card"></i> إضافة اسم موظف المبيعات للفواتير
+</button>
+
+<div id="salesNamesManager" style="display:none; margin:0 0 18px; padding:14px; border:1px solid var(--border-color); border-radius:var(--radius-md); background:rgba(20,20,28,.55);">
   <h3 style="margin:0 0 10px;">أسماء موظفي المبيعات للفواتير</h3>
   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
     <input id="salesNameInput" type="text" placeholder="أدخل اسم موظف المبيعات" style="min-width:260px;">
@@ -1732,20 +1737,26 @@ input:focus,select:focus,textarea:focus{
   </div>
   <div id="salesNamesList" style="margin-top:12px;"></div>
 </div>
+
+<!-- إضافة حساب جديد للنظام -->
+<div style="margin:0 0 10px;">
+  <h3 style="margin:0 0 10px;"><i class="fa-solid fa-user-plus"></i> إضافة حساب جديد للنظام</h3>
+</div>
 <div class="form-grid" style="background: rgba(20, 20, 28, 0.7); padding: 15px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-<div><label>اسم الموظف / الشخص:</label><input id="newAccName" placeholder="مثال: محاسب أحمد خالد" type="text"/></div>
+<div id="newAccNameWrap"><label>اسم الموظف:</label><input id="newAccName" placeholder="مثال: أحمد خالد" type="text"/></div>
 <div><label>نوع الصلاحية:</label>
-<select id="newAccRole">
+<select id="newAccRole" onchange="syncNewAccountNameField()">
 <option value="manager">مدير الفرع</option>
 <option value="employee">موظف مبيعات</option><option value="maintenance">موظف صيانة</option>
 <option value="accountant">محاسب مالي</option>
 </select>
 </div>
 <div><label>اسم المستخدم (Username):</label><input id="newAccUser" placeholder="username" type="text"/></div>
-<div><label>رمز الدخول (Password):</label><input id="newAccPass" placeholder="password" autocomplete="new-password" type="password"/></div>
+<div><label>كلمة المرور (Password):</label><input id="newAccPass" placeholder="password" autocomplete="new-password" type="password"/></div>
 <div><label>الفرع:</label><select id="newAccBranch"></select></div>
 </div>
-<button class="btn-custom" onclick="addNewUserAccount()" style="width: auto; padding: 10px 25px; margin-bottom: 20px;"><i class="fa-solid fa-user-plus"></i> إضافة حساب جديد للنظام</button>
+<button class="btn-custom" onclick="addNewUserAccount()" style="width: auto; padding: 10px 25px; margin: 14px 0 20px;"><i class="fa-solid fa-user-plus"></i> حفظ الحساب الجديد</button>
+
 <div class="table-container">
 <table id="usersManageTable">
 <thead>
@@ -2068,7 +2079,7 @@ input:focus,select:focus,textarea:focus{
         let branchDataStore = {};
         let salesInvoiceNames = [];
         // ===== VOLTECH MAINTENANCE V1 =====
-        let maintenanceReceiptCounter=1, maintenanceRecords=[], maintenanceAgencies=[], maintenanceFinancialLog=[], maintenanceNotifications=[], maintenanceMonthlyProfitState={};
+        let maintenanceReceiptCounter=1, maintenanceRecords=[], maintenanceAgencies=[], maintenanceNotifications=[];
 
         const BRANCH_DATA_VERSION = 1;
         function fixedSystemAccountsFactory(){
@@ -2081,33 +2092,16 @@ input:focus,select:focus,textarea:focus{
         function makeBranchDataSnapshot(){
             return {
                 version:BRANCH_DATA_VERSION,
-                invoiceCounter:Number(invoiceCounter)||1,
-                deviceInvoiceCounter:Number(deviceInvoiceCounter)||1,
-                accessoryInvoiceCounter:Number(accessoryInvoiceCounter)||1,
-                purchaseInvoiceCounter:Number(purchaseInvoiceCounter)||1,
-                cashierBalance:Number(cashierBalance)||0,
-                vaultBalance:Number(vaultBalance)||0,
-                deviceCatalog:JSON.parse(JSON.stringify(deviceCatalog||[])),
-                accessoryCatalog:JSON.parse(JSON.stringify(accessoryCatalog||[])),
-                warehouseDevicesList:JSON.parse(JSON.stringify(warehouseDevicesList||[])),
-                warehouseAccessoriesList:JSON.parse(JSON.stringify(warehouseAccessoriesList||[])),
-                accountsList:JSON.parse(JSON.stringify(accountsList||fixedSystemAccountsFactory())),
-                logsList:JSON.parse(JSON.stringify(logsList||[])),
-                purchasesLog:JSON.parse(JSON.stringify(purchasesLog||[])),
-                deviceInvoicesArchive:JSON.parse(JSON.stringify(deviceInvoicesArchive||[])),
-                accessoryInvoicesArchive:JSON.parse(JSON.stringify(accessoryInvoicesArchive||[])),
-                notificationsList:JSON.parse(JSON.stringify(notificationsList||[])),
-                financeBaseline:Number(financeBaseline)||Date.now(),
-                financeBaselineInitialized:!!financeBaselineInitialized,
-                financeMonthlyBaseline:Number(financeMonthlyBaseline)||Date.now(),
-                dailyFinanceState:JSON.parse(JSON.stringify(dailyFinanceState||{})),
-                dailyReportHistory:JSON.parse(JSON.stringify(dailyReportHistory||[])),
-                employeeMonthlySalesState:JSON.parse(JSON.stringify(employeeMonthlySalesState||{month:monthKeyLocal(),employees:{}})),
-                monthlyAccountsReportHistory:JSON.parse(JSON.stringify(monthlyAccountsReportHistory||[])),
-                adminDailyReportHistory:JSON.parse(JSON.stringify(adminDailyReportHistory||[])),
-                vipFinanceState:JSON.parse(JSON.stringify(vipFinanceState||{date:todayKeyLocal(),amount:0})),
-                vipAnnualHistory:JSON.parse(JSON.stringify(vipAnnualHistory||[])),
-                salesInvoiceNames:Array.isArray(salesInvoiceNames)?JSON.parse(JSON.stringify(salesInvoiceNames)):[]
+                invoiceCounter:Number(invoiceCounter)||1, deviceInvoiceCounter:Number(deviceInvoiceCounter)||1, accessoryInvoiceCounter:Number(accessoryInvoiceCounter)||1, purchaseInvoiceCounter:Number(purchaseInvoiceCounter)||1,
+                cashierBalance:Number(cashierBalance)||0, vaultBalance:Number(vaultBalance)||0,
+                deviceCatalog:JSON.parse(JSON.stringify(deviceCatalog||[])), accessoryCatalog:JSON.parse(JSON.stringify(accessoryCatalog||[])),
+                warehouseDevicesList:JSON.parse(JSON.stringify(warehouseDevicesList||[])), warehouseAccessoriesList:JSON.parse(JSON.stringify(warehouseAccessoriesList||[])),
+                accountsList:JSON.parse(JSON.stringify(accountsList||fixedSystemAccountsFactory())), logsList:JSON.parse(JSON.stringify(logsList||[])), purchasesLog:JSON.parse(JSON.stringify(purchasesLog||[])),
+                deviceInvoicesArchive:JSON.parse(JSON.stringify(deviceInvoicesArchive||[])), accessoryInvoicesArchive:JSON.parse(JSON.stringify(accessoryInvoicesArchive||[])), notificationsList:JSON.parse(JSON.stringify(notificationsList||[])),
+                financeBaseline:Number(financeBaseline)||Date.now(), financeBaselineInitialized:!!financeBaselineInitialized, financeMonthlyBaseline:Number(financeMonthlyBaseline)||Date.now(),
+                dailyFinanceState:JSON.parse(JSON.stringify(dailyFinanceState||{})), dailyReportHistory:JSON.parse(JSON.stringify(dailyReportHistory||[])), employeeMonthlySalesState:JSON.parse(JSON.stringify(employeeMonthlySalesState||{month:monthKeyLocal(),employees:{}})), monthlyAccountsReportHistory:JSON.parse(JSON.stringify(monthlyAccountsReportHistory||[])), adminDailyReportHistory:JSON.parse(JSON.stringify(adminDailyReportHistory||[])),
+                vipFinanceState:JSON.parse(JSON.stringify(vipFinanceState||{date:todayKeyLocal(),amount:0})), vipAnnualHistory:JSON.parse(JSON.stringify(vipAnnualHistory||[])), salesInvoiceNames:Array.isArray(salesInvoiceNames)?JSON.parse(JSON.stringify(salesInvoiceNames)):[],
+                maintenanceReceiptCounter:Number(maintenanceReceiptCounter)||1, maintenanceRecords:JSON.parse(JSON.stringify(maintenanceRecords||[])), maintenanceAgencies:JSON.parse(JSON.stringify(maintenanceAgencies||[])), maintenanceNotifications:JSON.parse(JSON.stringify(maintenanceNotifications||[]))
             };
         }
         function normalizeBranches(){
@@ -2141,9 +2135,7 @@ input:focus,select:focus,textarea:focus{
                 branchDataStore[id].maintenanceReceiptCounter=1;
                 branchDataStore[id].maintenanceRecords=[];
                 branchDataStore[id].maintenanceAgencies=[];
-                branchDataStore[id].maintenanceFinancialLog=[];
                 branchDataStore[id].maintenanceNotifications=[];
-                branchDataStore[id].maintenanceMonthlyProfitState={};
 
                 branchDataStore[id].financeBaseline=Date.now(); branchDataStore[id].financeMonthlyBaseline=Date.now();
                 branchDataStore[id].financeBaselineInitialized=true;
@@ -2217,11 +2209,10 @@ input:focus,select:focus,textarea:focus{
             maintenanceReceiptCounter=Number(d.maintenanceReceiptCounter)||1;
             maintenanceRecords=Array.isArray(d.maintenanceRecords)?JSON.parse(JSON.stringify(d.maintenanceRecords)):[];
             maintenanceAgencies=Array.isArray(d.maintenanceAgencies)?JSON.parse(JSON.stringify(d.maintenanceAgencies)):[];
-            maintenanceFinancialLog=Array.isArray(d.maintenanceFinancialLog)?JSON.parse(JSON.stringify(d.maintenanceFinancialLog)):[];
             maintenanceNotifications=Array.isArray(d.maintenanceNotifications)?JSON.parse(JSON.stringify(d.maintenanceNotifications)):[];
-            maintenanceMonthlyProfitState=(d.maintenanceMonthlyProfitState&&typeof d.maintenanceMonthlyProfitState==='object')?JSON.parse(JSON.stringify(d.maintenanceMonthlyProfitState)):{};
 
-            // لا ننشئ حساباً للفرع النشط داخل قائمته؛ حساب الفرع يظهر فقط في الفروع الأخرى.
+            const activeBranchObj=branches.find(b=>Number(b.id)===id);
+            if(activeBranchObj) ensureBranchAccountInList(accountsList,activeBranchObj);
             // ترحيل أسماء المبيعات القديمة إلى قائمة الفرع مرة واحدة، مع الإبقاء على بيانات المستخدمين القديمة كما هي.
             if(!salesInvoiceNames.length){
                 const legacyNames=(systemUsers||[]).filter(u=>u&&u.active!==false&&u.role==='employee'&&Number(u.branchId||1)===id)
@@ -2370,7 +2361,7 @@ function addBranch(){
         }
         // ===== V6.1 PRE-LINK SAFETY LAYER =====
         // هذه الحماية تعمل أوفلاين الآن، وسيتم نقل فرض الصلاحيات لاحقاً إلى Supabase RLS.
-        function hasRole(...roles){ return !!loggedInUser && roles.includes(loggedInUser.role); }
+        
         function requireRole(roles, message='ليس لديك صلاحية لتنفيذ هذه العملية.'){
             if(!loggedInUser || !roles.includes(loggedInUser.role)){ alert(message); return false; }
             return true;
@@ -2549,7 +2540,7 @@ function addBranch(){
                 return Number.isFinite(v) ? v : 0;
             } catch(e){ return 0; }
         }
-        function persistFinanceBaseline(){ localStorage.setItem('voltech_finance_baseline', String(financeBaseline)); }
+        
         function loadFinanceMonthlyBaseline(){
             try {
                 let v=Number(localStorage.getItem('voltech_finance_monthly_baseline')||'0');
@@ -2605,34 +2596,7 @@ function addBranch(){
             return true;
         }
 
-        function migrateFinanceDashboardHistoryCleanup(){
-            const key='voltech_finance_dashboard_cleanup_v8';
-            try{
-                if(localStorage.getItem(key)==='1') return false;
-                // هذه التهيئة تعالج السجلات القديمة التي بقيت ظاهرة بعد تصفير المؤشرات.
-                // لا نحذف الفواتير/المشتريات/المستودعات/الحسابات/السجل العام.
-                financeBaseline=Date.now();
-                financeMonthlyBaseline=financeBaseline;
-                financeBaselineInitialized=true;
-                persistFinanceBaseline();
-                persistFinanceMonthlyBaseline();
-                localStorage.setItem('voltech_finance_baseline_initialized','1');
-                dailyFinanceState=financeZeroState();
-                dailyFinanceState.lastResetAt=String(financeBaseline);
-                persistDailyFinanceState();
-                employeeMonthlySalesState={month:monthKeyLocal(),employees:{},_financeBaseline:financeBaseline};
-                persistEmployeeMonthlySalesState();
-                vipFinanceState={date:todayKeyLocal(),amount:0,_financeBaseline:financeBaseline};
-                persistVipFinanceState();
-                // تنظيف سجل التقارير اليومية القديم الظاهر في لوحة الحسابات الأساسية فقط.
-                // سجل VIP السنوي يبقى محفوظاً، بينما سجل VIP الشهري يُصفّر بصرياً عبر financeMonthlyBaseline.
-                dailyReportHistory=[]; persistDailyReportHistory();
-                adminDailyReportHistory=[]; persistAdminDailyReportHistory();
-                monthlyAccountsReportHistory=[]; persistMonthlyAccountsReportHistory();
-                localStorage.setItem(key,'1');
-                return true;
-            }catch(e){ console.error('Finance dashboard cleanup error:',e); return false; }
-        }
+        
 
         function rolloverEmployeeMonthlySales(){let m=monthKeyLocal();if(employeeMonthlySalesState.month!==m){employeeMonthlySalesState={month:m,employees:{}};persistEmployeeMonthlySalesState();}}
         function recordEmployeeMonthlySale(inv,direction=1){rolloverEmployeeMonthlySales();const invoiceMonth=inv&&inv.dateISO?String(inv.dateISO).slice(0,7):monthKeyLocal();if(invoiceMonth!==monthKeyLocal())return;let name=inv.employeeName||inv.employee||'';if(!name)return;let e=employeeMonthlySalesState.employees[name]||{deviceSales:0,accessorySales:0,total:0,profit:0};let amount=(inv.totalAmount||0)*direction;let profit=((inv.items||[]).reduce((sum,it)=>sum+(((it.priceIQD||0)-(it.costIQD||0))*(it.qty||1)),0)+(inv.warranty==='vip'?(inv.warrantyCost||0):0))*direction;if(inv.category==='device')e.deviceSales+=amount;else e.accessorySales+=amount;e.total+=amount;e.profit=(e.profit||0)+profit;employeeMonthlySalesState.employees[name]=e;persistEmployeeMonthlySalesState();}
@@ -2643,7 +2607,7 @@ function addBranch(){
         function persistVipFinanceState(){ if(vipFinanceState) vipFinanceState._financeBaseline=Number(financeBaseline||0); localStorage.setItem('voltech_vip_current',JSON.stringify(vipFinanceState)); }
         function loadVipAnnualHistory(){ try{ let x=JSON.parse(localStorage.getItem('voltech_vip_annual_history')||'[]'); let cutoff=Date.now()-365*86400000; return x.filter(r=>(r.timestamp||0)>=cutoff); }catch(e){return [];} }
         function persistVipAnnualHistory(){ vipAnnualHistory=vipAnnualHistory.filter(r=>(r.timestamp||0)>=Date.now()-365*86400000); localStorage.setItem('voltech_vip_annual_history',JSON.stringify(vipAnnualHistory)); }
-        function rolloverDailyFinance(){ let today=todayKeyLocal(); if(dailyFinanceState.date!==today){ dailyFinanceState={date:today,deviceSales:0,accessorySales:0,deviceProfit:0,accessoryProfit:0,totalSales:0,totalProfit:0,invoiceCount:0,lastResetAt:String(financeBaseline||'')}; persistDailyFinanceState(); } }
+        function rolloverDailyFinance(){ if(!dailyFinanceState || typeof dailyFinanceState!=='object'){ dailyFinanceState=financeZeroState(); dailyFinanceState.lastResetAt=String(financeBaseline||''); persistDailyFinanceState(); } }
         function rolloverVipFinance(){ let today=todayKeyLocal(); if(vipFinanceState.date!==today){ vipFinanceState={date:today,amount:0}; persistVipFinanceState(); } }
         function recordDailyInvoice(inv,direction=1){
             rolloverDailyFinance();
@@ -2692,10 +2656,7 @@ function addBranch(){
             renderDailyReportPanel(); renderFinanceDashboard(); alert('تم إصدار التقرير وتصفير المربعات اليومية، مع الاحتفاظ بالتقرير في السجل.');
         }
 
-        function getActiveNotificationsForUser(){
-            if(!loggedInUser || !['admin','manager'].includes(loggedInUser.role)) return [];
-            return (notificationsList||[]).filter(n=>Array.isArray(n.recipients)&&n.recipients.includes(loggedInUser.role)&&!((n.confirmedBy||[]).includes(String(loggedInUser.id))));
-        }
+        
         function renderNotifications(){
             const activeBox=document.getElementById('activeNotificationsBox'), historyBox=document.getElementById('notificationHistoryBox');
             if(!activeBox||!historyBox)return;
@@ -2733,20 +2694,63 @@ function addBranch(){
             if(u.kind==='accountVoucher'){
                 const acc=accountsList.find(a=>a.id===u.accountId); if(!acc){alert('الحساب المرتبط غير موجود.');return;}
                 const vi=Array.isArray(acc.vouchers)?acc.vouchers.findIndex(v=>v.id===u.voucherId):-1; if(vi<0){alert('السند غير موجود أو تمت معالجته مسبقاً.');return;}
-                if(u.source==='vault') vaultBalance += u.type==='payment'?u.amount:-u.amount; else cashierBalance += u.type==='payment'?u.amount:-u.amount;
-                if(u.type==='receipt'){
-                    acc.paid=Math.max(0,(acc.paid||0)-u.amount);
-                } else {
-                    const payableApplied=Math.min(Number(acc.payablePaid||0),Number(u.amount)||0);
-                    if(payableApplied>0){
-                        acc.payablePaid=Math.max(0,(acc.payablePaid||0)-payableApplied);
-                        acc.payableRemaining=Math.max(0,(acc.payableTotal||0)-acc.payablePaid);
+                const amount=Number(u.amount)||0;
+                // نعكس الخزينة أولاً بنفس مصدر السند.
+                if(u.source==='vault') vaultBalance += u.type==='payment'?amount:-amount; else cashierBalance += u.type==='payment'?amount:-amount;
+                if(isBranchAccount(acc)){
+                    // سند صرف على الفرع = مطلوب لنا، وسند قبض من الفرع = مطلوب علينا.
+                    acc.branchBalance=Number(acc.branchBalance||0);
+                    if(u.type==='payment') acc.branchBalance=Math.max(-1e18,acc.branchBalance-amount);
+                    else acc.branchBalance=Math.min(1e18,acc.branchBalance+amount);
+                }else if(isFixedSystemAccount(acc)){
+                    acc.operationalBalance=Number(acc.operationalBalance||0);
+                    if(u.type==='payment') acc.operationalBalance+=amount; else acc.operationalBalance-=amount;
+                }else{
+                    // عكس ما فعله السند فعلياً، مع مراعاة تسديد ذمة المورد إن وُجد.
+                    if(u.type==='receipt'){
+                        acc.paid=Math.max(0,Number(acc.paid||0)-amount);
                     }else{
-                        acc.total=Math.max(0,(acc.total||0)-u.amount);
+                        const applied=Number(u.appliedToPayable||0);
+                        if(applied>0){
+                            acc.payablePaid=Math.max(0,Number(acc.payablePaid||0)-applied);
+                            acc.payableRemaining=Math.max(0,Number(acc.payableTotal||0)-acc.payablePaid);
+                            const extra=Math.max(0,amount-applied);
+                            if(extra>0) acc.total=Math.max(0,Number(acc.total||0)-extra);
+                        }else{
+                            acc.total=Math.max(0,Number(acc.total||0)-amount);
+                        }
                     }
+                    acc.remaining=Math.max(0,Number(acc.total||0)-Number(acc.paid||0));
                 }
-                acc.remaining=Math.max(0,(acc.total||0)-(acc.paid||0));
-                acc.vouchers.splice(vi,1); if(Array.isArray(acc.paymentHistory)){let hi=acc.paymentHistory.findIndex(h=>String(h.voucherId)===String(u.voucherId)); if(hi>=0) acc.paymentHistory.splice(hi,1);}
+                acc.vouchers.splice(vi,1);
+                if(Array.isArray(acc.paymentHistory)) acc.paymentHistory=acc.paymentHistory.filter(h=>String(h.voucherId||'')!==String(u.voucherId||''));
+            } else if(u.kind==='purchaseDebtSettlement'){
+                const p=purchasesLog.find(x=>Number(x.id)===Number(u.purchaseId)); if(!p){alert('فاتورة المشتريات غير موجودة.');return;}
+                const acc=accountsList.find(a=>Number(a.id)===Number(u.accountId)); if(!acc){alert('حساب المورد المرتبط غير موجود.');return;}
+                const amount=Number(u.amount)||0, currency=p.currency||u.currency||'IQD', iqdeffect=Number(u.iqdeffect)||0;
+                // إعادة المبلغ للخزينة وإلغاء أثر التسديد فقط، دون حذف أصل الدين.
+                if(u.source==='vault') vaultBalance+=iqdeffect; else cashierBalance+=iqdeffect;
+                p.paidCurrencyAmount=Math.max(0,Number(p.paidCurrencyAmount||0)-amount);
+                p.remainingCurrencyAmount=Math.max(0,Number(getPurchaseCurrencyAmount(p))-Number(p.paidCurrencyAmount||0));
+                p.paidIQD=Math.max(0,Number(p.paidIQD||0)-iqdeffect);
+                if(currency==='USD'){
+                    acc.payableUSD=Math.max(0,Number(acc.payableUSD||0));
+                    acc.payablePaidUSD=Math.max(0,Number(acc.payablePaidUSD||0)-amount);
+                    acc.payableRemainingUSD=Math.max(0,acc.payableUSD-acc.payablePaidUSD);
+                }else{
+                    acc.payableIQD=Math.max(0,Number(acc.payableIQD||0));
+                    acc.payablePaidIQD=Math.max(0,Number(acc.payablePaidIQD||0)-amount);
+                    acc.payableRemainingIQD=Math.max(0,acc.payableIQD-acc.payablePaidIQD);
+                    acc.payablePaid=Math.max(0,Number(acc.payablePaid||0)-amount);
+                    acc.payableRemaining=Math.max(0,Number(acc.payableTotal||0)-acc.payablePaid);
+                }
+                if(Array.isArray(p.paymentHistory)){
+                    p.paymentHistory=p.paymentHistory.filter(h=>String(h.id||'')!==String(u.paymentHistoryId||''));
+                }
+                if(Array.isArray(acc.paymentHistory)){
+                    acc.paymentHistory=acc.paymentHistory.filter(h=>String(h.purchaseId||'')!==String(u.purchaseId||'') || Number(h.iqdeffect||0)!==iqdeffect || Number(h.amount||0)!==amount);
+                }
+                p.financialStatus='pending'; p.paidAt=''; p.paidBy=''; p.paidSource='';
             } else if(u.kind==='purchasePayment'){
                 const p=purchasesLog.find(x=>x.id===u.purchaseId); if(!p){alert('فاتورة المشتريات غير موجودة.');return;}
                 if(p.financialStatus!=='paid'){alert('الفاتورة ليست مدفوعة حالياً.');return;}
@@ -2791,11 +2795,8 @@ function addBranch(){
             });
         }
 
-        function getAccountPaymentHistoryHtml(acc) {
-            if(!acc.paymentHistory || !acc.paymentHistory.length) return '<span style="color:var(--text-muted);font-size:11px;">لا توجد دفعات</span>';
-            return acc.paymentHistory.map(p=>{ const cur=p.currency||'IQD'; const amount=cur==='USD'?`${Number(p.amount||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} $`:`${Number(p.amount||0).toLocaleString()} د.ع`; const fx=p.exchangeRate?` — سعر الصرف ${Number(p.exchangeRate).toLocaleString()} د.ع/$`:""; const cash=p.iqdeffect!=null?` — الأثر النقدي ${Number(p.iqdeffect||0).toLocaleString()} د.ع`:""; return `<div style="padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)"><b style="color:var(--accent-green)">${amount}</b>${fx}${cash} — ${p.date||''} ${p.time||''}<br><span style="font-size:11px;color:var(--text-muted)">${p.note || ""}</span></div>`; }).join("");
-        }
-        function canEditWarehouseDevice(){ return loggedInUser && (loggedInUser.role==='admin'||loggedInUser.role==='manager'); }
+        
+        
 
         async function hashOfflinePassword(value){
             const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(String(value)));
@@ -2939,48 +2940,13 @@ function addBranch(){
         }
 
         function maintenanceFindSale(type,invoiceNo,imei,barcode,itemName,customerPhone,customerName){
-            const n=String(invoiceNo||'').trim().toLowerCase();
-            const im=String(imei||'').replace(/\D/g,'').trim();
-            const bc=String(barcode||'').trim().toLowerCase();
-            const nm=String(itemName||'').trim().toLowerCase();
-            const ph=String(customerPhone||'').replace(/\D/g,'').trim();
-            const cn=String(customerName||'').trim().toLowerCase();
-            const primaryType=type==='device'?'device':'accessory';
-            const sources=[[primaryType,primaryType==='device'?deviceInvoicesArchive:accessoryInvoicesArchive],
-                           [primaryType==='device'?'accessory':'device',primaryType==='device'?accessoryInvoicesArchive:deviceInvoicesArchive]];
-            for(const [foundType,arr] of sources){
-                for(const inv of(arr||[])){
-                    if(inv.status!=='active') continue;
-                    const invNo=String(inv.invoiceNo??inv.id??'').trim().toLowerCase();
-                    const invPhone=String(inv.clientPhone??inv.customerPhone??'').replace(/\D/g,'').trim();
-                    const invName=String(inv.clientName??inv.customerName??'').trim().toLowerCase();
-                    if(n && invNo!==n) continue;
-                    if(!n && ph && invPhone!==ph) continue;
-                    if(!n && ph && cn && invName!==cn && !invName.includes(cn) && !cn.includes(invName)) continue;
-                    const items=Array.isArray(inv.items)?inv.items:[];
-                    let best=null;
-                    for(const item of items){
-                        const itemImei=String(item.imei??item.IMEI??item.imeiNumber??item.serialNumber??item.serial??'').replace(/\D/g,'').trim();
-                        const itemBarcode=String(item.barcode??item.Barcode??'').trim().toLowerCase();
-                        const itemNm=String(item.name??item.model??'').trim().toLowerCase();
-                        if(im && itemImei===im){best=item;break;}
-                        if(!im && bc && itemBarcode===bc){best=item;break;}
-                        if(!im && !bc && nm && (itemNm===nm || itemNm.includes(nm) || nm.includes(itemNm))){best=item;break;}
-                    }
-                    if(best) return{inv,item:best,itemType:foundType};
-                    // إذا كان رقم الفاتورة محدداً ولم يوجد معرف أدق، فالفاتورة نفسها تكفي
-                    // خصوصاً لصيانة الإكسسوارات الحرة.
-                    if(n && items.length===1) return{inv,item:items[0],itemType:foundType};
-                }
-            }
-            return null;
+            const n=String(invoiceNo||'').trim().toLowerCase(), im=String(imei||'').replace(/\D/g,'').trim(), bc=String(barcode||'').trim().toLowerCase(), nm=String(itemName||'').trim().toLowerCase(), ph=String(customerPhone||'').replace(/\D/g,'').trim(), cn=String(customerName||'').trim().toLowerCase(), primaryType=type==='device'?'device':'accessory';
+            const entries=Object.entries(branchDataStore||{}), currentKey=String(Number(currentBranchId)||1), ordered=entries.sort((a,b)=>(a[0]===currentKey?-1:0)-(b[0]===currentKey?-1:0));
+            for(const [branchId,d] of ordered){const archives=primaryType==='device'?(d.deviceInvoicesArchive||[]):(d.accessoryInvoicesArchive||[]);for(const inv of archives){if(inv.status!=='active')continue;const invNo=String(inv.invoiceNo??inv.id??'').trim().toLowerCase(), clientName=String(inv.clientName??inv.customerName??'').trim().toLowerCase(), clientPhone=String(inv.clientPhone??inv.customerPhone??'').replace(/\D/g,'').trim();if(n&&invNo!==n)continue;for(const item of(inv.items||[])){const ii=String(item?.imei??item?.IMEI??item?.imeiNumber??item?.serialNumber??item?.serial??'').replace(/\D/g,'').trim(), ib=String(item?.barcode??item?.Barcode??'').trim().toLowerCase(), iname=String(item?.name??item?.model??'').trim().toLowerCase();if((im&&ii===im)||(!im&&bc&&ib===bc)||(n&&invNo===n)||(!n&&!im&&!bc&&nm&&iname.includes(nm)&&(!ph||clientPhone===ph)&&(!cn||clientName.includes(cn))) )return {inv,item,itemType:primaryType,saleBranchId:Number(branchId)||1,saleBranchName:branchName(Number(branchId)||1)};}}}
+            const arr=primaryType==='device'?deviceInvoicesArchive:accessoryInvoicesArchive;for(const inv of(arr||[])){if(inv.status!=='active')continue;const invNo=String(inv.invoiceNo??inv.id??'').trim().toLowerCase();if(n&&invNo!==n)continue;for(const item of(inv.items||[])){const ii=String(item?.imei??item?.IMEI??item?.imeiNumber??item?.serialNumber??item?.serial??'').replace(/\D/g,'').trim(),ib=String(item?.barcode??item?.Barcode??'').trim().toLowerCase();if((im&&ii===im)||(!im&&bc&&ib===bc))return {inv,item,itemType:primaryType,saleBranchId:Number(currentBranchId)||1,saleBranchName:branchName()};}} return null;
         }
 
-        function maintenanceFindSaleByImei(type,imei){
-            const im=String(imei||'').replace(/\D/g,'').trim();
-            if(!/^\d{15}$/.test(im)) return null;
-            return maintenanceFindSale(type,'',im,'','','','');
-        }
+        
 
         function lookupMaintenanceSaleByImei(value){
             const input=document.getElementById('maintenanceImei'); if(!input) return;
@@ -3087,12 +3053,11 @@ function addBranch(){
                 itemType:type,company:resolvedCompany,model:resolvedModel,
                 itemName:resolvedItemName,color:resolvedColor,memory:resolvedMemory,
                 imei:resolvedImei,barcode:resolvedBarcode,customerName,customerPhone,
-                originalSaleInvoiceNo:originalInvoice,originalSaleDate,fault,agencyId,
+                originalSaleInvoiceNo:originalInvoice,originalSaleDate,originalSaleBranchId:sale?.saleBranchId||null,originalSaleBranchName:sale?.saleBranchName||'',fault,agencyId,
                 agencyName:maintenanceAgencies.find(a=>Number(a.id)===agencyId)?.name||'',
                 status:'استلام للصيانة',deliveredToAgencyAt:null,deliveredToAgencyDate:'',
                 returnedFromAgencyAt:null,returnFromAgencyDate:'',agencySlipNo:'',
-                agencyResult:'',repairDetails:'',agencyCost:0,customerCharge:0,
-                customerApproval:null,financialPosted:false,customerPaid:0,paymentHistory:[],
+                agencyResult:'',repairDetails:'',replacedParts:'',agencyNotes:'',
                 deliveredToCustomerAt:null,
                 freeAccessory:type==='accessory'&&!sale
             };
@@ -3119,16 +3084,31 @@ function addBranch(){
         function maintenanceGet(id){return(maintenanceRecords||[]).find(r=>Number(r.id)===Number(id));}
         function renderMaintenanceTable(){if(!requireMaintenanceAccess())return;const tb=document.querySelector('#maintenanceTable tbody');if(!tb)return;const q=(document.getElementById('maintenanceSearchInput')?.value||'').trim().toLowerCase(),sf=document.getElementById('maintenanceStatusFilter')?.value||'';const list=(maintenanceRecords||[]).filter(r=>{const hay=[r.receiptNo,r.customerPhone,r.customerName,r.imei,r.originalSaleInvoiceNo,r.itemName,r.model].join(' ').toLowerCase();return(!q||hay.includes(q))&&(!sf||r.status===sf);});const title=document.getElementById('maintenanceBranchTitle');if(title)title.textContent=branchName();tb.innerHTML=list.length?list.map(r=>`<tr><td><b>${r.receiptNo}</b></td><td>${maintenanceEscape(r.customerName)}</td><td>${maintenanceEscape(r.customerPhone)}</td><td>${r.itemType==='device'?'جهاز':'اكسسوار'}</td><td>${maintenanceEscape(r.imei||'-')}</td><td>${maintenanceEscape(r.agencyName||'-')}</td><td><span class="maintenance-status ${maintenanceStatusClass(r)}">${maintenanceEscape(r.status)}</span></td><td>${maintenanceAgeDays(r)} يوم</td><td><div class="maintenance-actions"><button class="btn-action" style="background:#3498db;color:#fff;" onclick="openMaintenanceDetails(${r.id})">فتح</button><button class="btn-action" style="background:#8e44ad;color:#fff;" onclick="printMaintenanceSlip(${r.id},'customer')">طباعة وصل</button><button class="btn-action" style="background:#16a085;color:#fff;" onclick="printMaintenanceSlip(${r.id},'agency')">ورقة الوكالة</button></div></td></tr>`).join(''):'<tr><td colspan="9" style="padding:25px;color:var(--text-muted);">لا توجد سجلات صيانة لهذا الفرع.</td></tr>';renderMaintenanceAlerts();}
         function renderMaintenanceAlerts(){const b=document.getElementById('maintenanceAlerts');if(!b)return;const a=(maintenanceRecords||[]).filter(r=>r.status!=='تم التسليم'),o10=a.filter(r=>maintenanceAgeDays(r)>10),o20=a.filter(r=>maintenanceAgeDays(r)>20);b.innerHTML=o10.length||o20.length?`<div class="maintenance-alert-box"><b>تنبيهات الصيانة المتأخرة</b>${o10.length?`<div>أكثر من 10 أيام: ${o10.length}</div>`:''}${o20.length?`<div style="color:var(--accent-red);">أكثر من 20 يوماً: ${o20.length}</div>`:''}</div>`:'';}
-        function openMaintenanceDetails(id){if(!requireMaintenanceAccess())return;const r=maintenanceGet(id);if(!r)return;const b=document.getElementById('maintenanceDetailsBox');if(!b)return;const total=Number(r.customerCharge)||0,paid=Number(r.customerPaid)||0,remain=Math.max(0,total-paid);b.style.display='block';b.innerHTML=`<h2>تفاصيل وصل الصيانة ${r.receiptNo}</h2><div class="form-grid"><div><b>الفرع:</b> ${maintenanceEscape(r.branchName)}</div><div><b>الموظف المستلم:</b> ${maintenanceEscape(r.receivedByName)}</div><div><b>الزبون:</b> ${maintenanceEscape(r.customerName)}</div><div><b>الهاتف:</b> ${maintenanceEscape(r.customerPhone)}</div><div><b>القطعة:</b> ${maintenanceEscape((r.company||'')+' '+(r.model||r.itemName||''))}</div><div><b>IMEI:</b> ${maintenanceEscape(r.imei||'-')}</div><div><b>فاتورة البيع:</b> ${maintenanceEscape(r.originalSaleInvoiceNo)}</div><div><b>مرات الصيانة:</b> ${r.maintenanceCountForItem||1}</div><div><b>الحالة:</b> ${maintenanceEscape(r.status)}</div><div><b>الوكالة:</b> ${maintenanceEscape(r.agencyName||'-')}</div></div><div style="margin:10px 0;"><b>العطل:</b> ${maintenanceEscape(r.fault)}</div><div class="form-grid"><div><label>تاريخ رجوع الوكالة:</label><input id="mAgencyDate" type="date" value="${r.returnFromAgencyDate||''}"></div><div><label>رقم وصل الوكالة:</label><input id="mAgencySlip" value="${maintenanceEscape(r.agencySlipNo||'')}"></div><div><label>نتيجة الوكالة:</label><select id="mAgencyResult"><option value="">اختر</option><option>تم الإصلاح</option><option>تعذر أو رفض الإصلاح</option></select></div><div><label>تكلفة الوكالة:</label><input id="mAgencyCost" type="number" min="0" value="${Number(r.agencyCost)||0}"></div><div><label>مبلغ الزبون:</label><input id="mCustomerCharge" type="number" min="0" value="${Number(r.customerCharge)||0}"></div></div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;"><button class="btn-action" style="background:#16a085;color:#fff;padding:9px 13px;" onclick="setMaintenanceAgencyDelivered(${r.id})">تسليم للوكالة الآن</button><button class="btn-action" style="background:#3498db;color:#fff;padding:9px 13px;" onclick="saveMaintenanceAgencyResponse(${r.id})">حفظ رد الوكالة</button><button class="btn-action" style="background:#2ecc71;color:#fff;padding:9px 13px;" onclick="approveMaintenanceCharge(${r.id})">موافقة الزبون</button><button class="btn-action" style="background:#e67e22;color:#fff;padding:9px 13px;" onclick="rejectMaintenanceCharge(${r.id})">رفض الزبون</button><button class="btn-action" style="background:#8e44ad;color:#fff;padding:9px 13px;" onclick="collectMaintenancePayment(${r.id})">استلام دفعة للكاشير</button><button class="btn-action" style="background:#374151;color:#fff;padding:9px 13px;" onclick="notifyMaintenanceCustomer(${r.id})">تبليغ الزبون</button><button class="btn-action" style="background:#2ecc71;color:#fff;padding:9px 13px;" onclick="completeMaintenanceDelivery(${r.id})">تسليم للزبون</button><button class="btn-action" style="background:#34495e;color:#fff;padding:9px 13px;" onclick="printMaintenanceSlip(${r.id},'customer')">طباعة وصل الزبون</button><button class="btn-action" style="background:#34495e;color:#fff;padding:9px 13px;" onclick="printMaintenanceSlip(${r.id},'agency')">طباعة ورقة الوكالة</button></div><div style="margin-top:12px;padding:10px;border:1px solid var(--border-color);border-radius:10px;"><b>المالية:</b> تكلفة الوكالة ${Number(r.agencyCost||0).toLocaleString()} د.ع — مبلغ الزبون ${total.toLocaleString()} د.ع — الربح ${(total-Number(r.agencyCost||0)).toLocaleString()} د.ع — المدفوع ${paid.toLocaleString()} د.ع — المتبقي ${remain.toLocaleString()} د.ع</div>`;document.getElementById('mAgencyResult').value=r.agencyResult||'';b.scrollIntoView({behavior:'smooth',block:'start'});}
+        function openMaintenanceDetails(id){
+            if(!requireMaintenanceAccess())return; const r=maintenanceGet(id); if(!r)return; const b=document.getElementById('maintenanceDetailsBox'); if(!b)return;
+            b.style.display='block'; b.innerHTML=`<h2>تفاصيل وصل الصيانة ${maintenanceEscape(r.receiptNo)}</h2>
+            <div class="form-grid"><div><b>فرع الاستلام:</b> ${maintenanceEscape(r.branchName)}</div><div><b>فرع البيع الأصلي:</b> ${maintenanceEscape(r.originalSaleBranchName||'-')}</div><div><b>الموظف المستلم:</b> ${maintenanceEscape(r.receivedByName)}</div><div><b>الزبون:</b> ${maintenanceEscape(r.customerName)}</div><div><b>الهاتف:</b> ${maintenanceEscape(r.customerPhone)}</div><div><b>نوع القطعة:</b> ${r.itemType==='device'?'جهاز':'اكسسوار'}</div><div><b>الشركة / الموديل:</b> ${maintenanceEscape((r.company||'')+' '+(r.model||r.itemName||''))}</div><div><b>IMEI:</b> ${maintenanceEscape(r.imei||'-')}</div><div><b>الباركود:</b> ${maintenanceEscape(r.barcode||'-')}</div><div><b>فاتورة البيع الأصلية:</b> ${maintenanceEscape(r.originalSaleInvoiceNo||'-')}</div><div><b>مرات الصيانة:</b> ${r.maintenanceCountForItem||1}</div><div><b>الوكالة:</b> ${maintenanceEscape(r.agencyName||'-')}</div><div><b>الحالة:</b> ${maintenanceEscape(r.status)}</div></div>
+            <div style="margin:12px 0;"><b>العطل عند الاستلام:</b><div class="notice">${maintenanceEscape(r.fault||'-')}</div></div>
+            <div class="form-grid"><div><label>تاريخ التسليم للوكالة:</label><input id="mAgencyDate" type="date" value="${r.deliveredToAgencyDate||''}"></div><div><label>رقم وصل الوكالة:</label><input id="mAgencySlip" value="${maintenanceEscape(r.agencySlipNo||'')}"></div><div><label>نتيجة الوكالة:</label><select id="mAgencyResult"><option value="">اختر</option><option>تم الإصلاح</option><option>تعذر أو رفض الإصلاح</option></select></div><div><label>القطع المستبدلة:</label><input id="mReplacedParts" value="${maintenanceEscape(r.replacedParts||'')}"></div></div>
+            <div style="margin-top:10px;"><label>ملاحظات الوكالة:</label><textarea id="mAgencyNotes" rows="3" style="width:100%;">${maintenanceEscape(r.agencyNotes||'')}</textarea></div>
+            <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;"><button class="btn-action" style="background:#16a085;color:#fff;padding:9px 13px;" onclick="setMaintenanceAgencyDelivered(${r.id})">تسليم للوكالة الآن</button><button class="btn-action" style="background:#3498db;color:#fff;padding:9px 13px;" onclick="saveMaintenanceAgencyResponse(${r.id})">حفظ رد الوكالة</button><button class="btn-action" style="background:#374151;color:#fff;padding:9px 13px;" onclick="notifyMaintenanceCustomer(${r.id})">تبليغ الزبون</button><button class="btn-action" style="background:#2ecc71;color:#fff;padding:9px 13px;" onclick="completeMaintenanceDelivery(${r.id})">تسليم للزبون</button><button class="btn-action" style="background:#34495e;color:#fff;padding:9px 13px;" onclick="printMaintenanceSlip(${r.id},'customer')">إعادة طباعة وصل الزبون</button><button class="btn-action" style="background:#34495e;color:#fff;padding:9px 13px;" onclick="printMaintenanceSlip(${r.id},'agency')">إعادة طباعة ورقة الوكالة</button></div>`;
+            const result=document.getElementById('mAgencyResult'); if(result)result.value=r.agencyResult||''; b.scrollIntoView({behavior:'smooth',block:'start'});
+        }
         function setMaintenanceAgencyDelivered(id){if(!requireMaintenanceAccess())return;const r=maintenanceGet(id);if(!r)return;const d=maintenanceNow();r.deliveredToAgencyAt=d.iso;r.deliveredToAgencyDate=d.date;r.status='تم التسليم للوكالة';saveAllAppState();renderMaintenanceTable();openMaintenanceDetails(id);}
-        function saveMaintenanceAgencyResponse(id){if(!requireMaintenanceAccess())return;const r=maintenanceGet(id);if(!r)return;const result=document.getElementById('mAgencyResult')?.value||'',cost=Math.max(0,Number(document.getElementById('mAgencyCost')?.value)||0),charge=Math.max(0,Number(document.getElementById('mCustomerCharge')?.value)||0),date=document.getElementById('mAgencyDate')?.value||'',slip=document.getElementById('mAgencySlip')?.value.trim()||'';r.agencyResult=result;r.agencyCost=cost;r.customerCharge=charge;r.agencySlipNo=slip;r.returnFromAgencyDate=date;r.returnedFromAgencyAt=date?new Date(date+'T12:00:00').toISOString():null;r.status=result==='تم الإصلاح'?(charge>0?'بانتظار موافقة الزبون':'جاهز للتسليم'):(result==='تعذر أو رفض الإصلاح'?'تعذر أو رفض الإصلاح':'رد الوكالة');if(result==='تعذر أو رفض الإصلاح')r.customerCharge=0;saveAllAppState();renderMaintenanceTable();openMaintenanceDetails(id);}
-        function approveMaintenanceCharge(id){if(!requireMaintenanceAccess())return;const r=maintenanceGet(id);if(!r)return;const charge=Math.max(0,Number(r.customerCharge)||0),cost=Math.max(0,Number(r.agencyCost)||0);if(charge<cost&&!confirm('مبلغ الزبون أقل من تكلفة الوكالة. هل تريد الاستمرار؟'))return;r.customerApproval=true;r.financialPosted=true;r.financialPostedAt=new Date().toISOString();r.status='جاهز للتسليم';maintenanceFinancialLog.unshift({id:Date.now()+Math.floor(Math.random()*1000),maintenanceId:r.id,receiptNo:r.receiptNo,branchId:r.branchId,date:new Date().toISOString(),agencyCost:cost,customerCharge:charge,profit:charge-cost,type:'approved_charge'});saveAllAppState();renderMaintenanceTable();openMaintenanceDetails(id);}
-        function rejectMaintenanceCharge(id){if(!requireMaintenanceAccess())return;const r=maintenanceGet(id);if(!r)return;r.customerApproval=false;r.financialPosted=false;r.customerCharge=0;r.status='تعذر أو رفض الإصلاح';saveAllAppState();renderMaintenanceTable();openMaintenanceDetails(id);}
-        function collectMaintenancePayment(id){if(!requireMaintenanceAccess())return;const r=maintenanceGet(id);if(!r)return;if(!r.financialPosted||r.customerApproval!==true){alert('لا يمكن استلام مبلغ قبل موافقة الزبون.');return;}const total=Math.max(0,Number(r.customerCharge)||0),paid=Math.max(0,Number(r.customerPaid)||0),remain=total-paid;if(remain<=0){alert('تم تسديد المبلغ بالكامل.');return;}const input=prompt(`المتبقي ${remain.toLocaleString()} د.ع — أدخل المبلغ المستلم:`,String(remain));if(input===null)return;const amount=Number(input);if(!Number.isFinite(amount)||amount<=0||amount>remain){alert('المبلغ غير صالح.');return;}cashierBalance=Number(cashierBalance||0)+amount;r.customerPaid=paid+amount;const n=maintenanceNow();r.paymentHistory=r.paymentHistory||[];r.paymentHistory.unshift({amount,date:n.date,time:n.time,employee:loggedInUser.name,source:'cashier',note:'دفعة صيانة — دخلت إلى الكاشير'});maintenanceFinancialLog.unshift({id:Date.now()+Math.floor(Math.random()*1000),maintenanceId:r.id,receiptNo:r.receiptNo,branchId:r.branchId,date:new Date().toISOString(),agencyCost:0,customerCharge:amount,profit:0,type:'customer_payment_cashier'});saveAllAppState();updateTreasuryDisplay();renderMaintenanceTable();openMaintenanceDetails(id);}
+        function saveMaintenanceAgencyResponse(id){
+            if(!requireMaintenanceAccess())return; const r=maintenanceGet(id); if(!r)return;
+            const result=document.getElementById('mAgencyResult')?.value||'', date=document.getElementById('mAgencyDate')?.value||'', slip=document.getElementById('mAgencySlip')?.value.trim()||'', parts=document.getElementById('mReplacedParts')?.value.trim()||'', notes=document.getElementById('mAgencyNotes')?.value.trim()||'';
+            if(!result){alert('اختر نتيجة الوكالة أولاً.');return;} r.agencyResult=result; r.replacedParts=parts; r.agencyNotes=notes; r.agencySlipNo=slip; r.returnFromAgencyDate=date; r.returnedFromAgencyAt=date?new Date(date+'T12:00:00').toISOString():new Date().toISOString(); r.status=result==='تم الإصلاح'?'جاهز للتسليم':'تعذر أو رفض الإصلاح'; saveAllAppState(); renderMaintenanceTable(); openMaintenanceDetails(id);
+        }
+        
+        
+        
         function notifyMaintenanceCustomer(id){if(!requireMaintenanceAccess())return;const r=maintenanceGet(id);if(!r)return;const x=prompt('اكتب: اتصال أو رسالة','اتصال');if(x===null)return;const method=x.trim()==='رسالة'?'رسالة':'اتصال',n=maintenanceNow();maintenanceNotifications.unshift({id:Date.now()+Math.floor(Math.random()*1000),maintenanceId:r.id,receiptNo:r.receiptNo,method,date:n.date,time:n.time,employee:loggedInUser.name});saveAllAppState();alert(`تم تسجيل تبليغ الزبون بواسطة ${method}.`);}
-        function completeMaintenanceDelivery(id){if(!requireMaintenanceAccess())return;const r=maintenanceGet(id);if(!r)return;const remain=Math.max(0,(Number(r.customerCharge)||0)-(Number(r.customerPaid)||0));if(remain>0){alert(`لا يمكن التسليم: المتبقي ${remain.toLocaleString()} د.ع.`);return;}r.deliveredToCustomerAt=new Date().toISOString();r.status='تم التسليم';saveAllAppState();renderMaintenanceTable();openMaintenanceDetails(id);}
-        function maintenanceMonthlyProfit(){const k=new Date(),key=`${k.getFullYear()}-${String(k.getMonth()+1).padStart(2,'0')}`;return(maintenanceFinancialLog||[]).filter(x=>x.type==='approved_charge'&&String(x.date||'').slice(0,7)===key).reduce((s,x)=>s+Number(x.profit||0),0);}
-        function renderMaintenanceProfitCard(){const e=document.getElementById('finMonthlyMaintenanceProfit');if(e)e.textContent=maintenanceMonthlyProfit().toLocaleString()+' د.ع';}
+        function completeMaintenanceDelivery(id){
+            if(!requireMaintenanceAccess())return; const r=maintenanceGet(id); if(!r)return; if(!['جاهز للتسليم','تم الإصلاح'].includes(r.status)){alert('لا يمكن تسليم القطعة قبل تسجيل رد الوكالة.');return;} r.deliveredToCustomerAt=new Date().toISOString(); r.status='تم التسليم'; saveAllAppState(); renderMaintenanceTable(); openMaintenanceDetails(id);
+        }
+        
+        
         function maintenancePrintStyles(){return `
 @page{size:A4;margin:12mm}
 *{box-sizing:border-box} body{margin:0;background:#fff;color:#17202a;font-family:Arial,Tahoma,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -3145,26 +3125,14 @@ function addBranch(){
 @media print{.sheet{max-width:none;width:100%;padding:0}.section{break-inside:avoid}.header{break-inside:avoid}}
 `;}
 function maintenancePrintField(label,value,cls=''){return `<div class="field ${cls}"><b>${label}</b><span>${maintenanceEscape(value||'-')}</span></div>`;}
-function printMaintenanceBundle(id){if(!requireMaintenanceAccess())return;const r=maintenanceGet(id);if(!r)return;const w=window.open('','_blank','width=900,height=1000');if(!w){alert('يرجى السماح بالنوافذ المنبثقة للطباعة.');return;}const typeLabel=r.itemType==='device'?'جهاز':'اكسسوار',itemLabel=maintenanceEscape(`${r.company||''} ${r.model||r.itemName||''}`.trim()),imei=maintenanceEscape(r.imei||'-'),barcode=maintenanceEscape(r.barcode||'-'),saleNo=maintenanceEscape(r.originalSaleInvoiceNo||'-'),employee=maintenanceEscape(r.receivedByName||'-'),branch=maintenanceEscape(r.branchName||'-'),customer=maintenanceEscape(r.customerName||'-'),phone=maintenanceEscape(r.customerPhone||'-'),fault=maintenanceEscape(r.fault||'-'),agency=maintenanceEscape(r.agencyName||'-');w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>وصل صيانة ${maintenanceEscape(r.receiptNo)}</title><style>${maintenancePrintStyles()}</style></head><body>
-<div class="sheet customer-card">
-<div class="header"><div><div class="brand">VOL<span>TECH</span></div><div class="subtitle">لتجارة الهواتف النقالة والاكسسوارات والانظمة الذكية</div></div><div><div class="doc-title">وصل استلام الصيانة للزبون</div><div class="doc-sub">رقم الوصل: <span class="number">${maintenanceEscape(r.receiptNo)}</span></div><div class="doc-sub">${maintenanceEscape(r.receivedDate||'')} — ${maintenanceEscape(r.receivedTime||'')}</div></div></div>
-<div class="section"><div class="section-title">بيانات الزبون</div><div class="grid">${maintenancePrintField('اسم الزبون',customer)}${maintenancePrintField('رقم الهاتف',phone)}${maintenancePrintField('فرع الاستلام',branch)}${maintenancePrintField('موظف الاستلام',employee)}</div></div>
-<div class="section"><div class="section-title">بيانات القطعة</div><div class="grid">${maintenancePrintField('نوع القطعة',typeLabel)}${maintenancePrintField('الشركة / الموديل',itemLabel)}${maintenancePrintField('اللون',r.color||'-')}${maintenancePrintField('الذاكرة / السعة',r.memory||'-')}${maintenancePrintField('IMEI',imei)}${maintenancePrintField('الباركود',barcode)}${maintenancePrintField('رقم فاتورة البيع الأصلية',saleNo)}${maintenancePrintField('الوكالة المحالة',agency)}</div></div>
-<div class="section"><div class="section-title">وصف العطل عند الاستلام</div><div class="fault">${fault}</div></div>
-<div class="notice"><b>تنبيه:</b> هذا الوصل يثبت استلام القطعة للصيانة ويحفظ للزبون كمرجع. لا يتضمن أسعار البيع أو الشراء. يرجى الاحتفاظ بالوصل عند المراجعة والاستلام.</div>
-<div class="signrow"><div class="sigbox">موظف الاستلام: <b>${employee}</b><div class="sigline"></div></div><div class="sigbox">استلام الزبون عند إعادة القطعة<div class="sigline"></div></div></div>
-<div class="footer"><span>VOLTECH — قسم الصيانة</span><span>وصل صيانة رقم ${maintenanceEscape(r.receiptNo)}</span></div></div>
-
-<div class="sheet agency-tech">
-<div class="header"><div><div class="brand">VOL<span>TECH</span></div><div class="subtitle">لتجارة الهواتف النقالة والاكسسوارات والانظمة الذكية</div></div><div><div class="doc-title">ورقة تسليم القطعة إلى الوكالة</div><div class="doc-sub">مرجع الصيانة: <span class="number">${maintenanceEscape(r.receiptNo)}</span></div><div class="doc-sub">تاريخ الاستلام: ${maintenanceEscape(r.receivedDate||'')}</div></div></div>
-<div class="section"><div class="section-title">بيانات الجهة المستلمة للقطعة</div><div class="grid">${maintenancePrintField('الوكالة',agency)}${maintenancePrintField('فرع VOLTECH',branch)}${maintenancePrintField('موظف التسليم',employee)}${maintenancePrintField('تاريخ التسليم للوكالة',r.deliveredToAgencyDate||'يُحدد عند التسليم')}</div></div>
-<div class="section"><div class="section-title">بيانات القطعة الفنية</div><div class="grid">${maintenancePrintField('نوع القطعة',typeLabel)}${maintenancePrintField('الشركة / الموديل',itemLabel)}${maintenancePrintField('اللون',r.color||'-')}${maintenancePrintField('الذاكرة / السعة',r.memory||'-')}${maintenancePrintField('IMEI',imei)}${maintenancePrintField('الباركود',barcode)}${maintenancePrintField('رقم فاتورة البيع الأصلية',saleNo)}${maintenancePrintField('رقم وصل الوكالة',r.agencySlipNo||'غير متوفر')}</div></div>
-<div class="section"><div class="section-title">بلاغ العطل وملاحظات التسليم</div><div class="fault"><b>العطل المبلغ عنه:</b><br>${fault}<br><br><b>ملاحظات الوكالة / نتيجة الإصلاح:</b><br>${maintenanceEscape(r.agencyResult||'................................................................................................')}</div></div>
-<div class="notice"><b>بيانات خاصة بالوكالة:</b> المطلوب تسجيل نتيجة الفحص/الإصلاح، القطع المستبدلة، وأي ملاحظات فنية، ثم إعادة القطعة مع رقم وصل الوكالة إن وجد. لا تظهر أسعار البيع أو الشراء في هذه الورقة.</div>
-<div class="signrow"><div class="sigbox">موظف التسليم: <b>${employee}</b><div class="sigline"></div></div><div class="sigbox">استلام الوكالة<div class="sigline"></div></div></div>
-<div class="footer"><span>VOLTECH — ورقة وكالة الصيانة</span><span>مرجع الصيانة ${maintenanceEscape(r.receiptNo)}</span></div></div>
-</body></html>`);w.document.close();w.focus();setTimeout(()=>w.print(),300);}
-function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess())return;const r=maintenanceGet(id);if(!r)return;const w=window.open('','_blank','width=900,height=1000');if(!w){alert('يرجى السماح بالنوافذ المنبثقة.');return;}const isAgency=type==='agency',title=isAgency?'ورقة تسليم الصيانة إلى الوكالة':'وصل استلام الصيانة للزبون',doc=isAgency?'agency':'customer';w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>${title}</title><style>${maintenancePrintStyles()}</style></head><body>`);const tmp=w.document.body;const source=document.createElement('div');source.innerHTML='';tmp.innerHTML=`<div class="sheet ${doc==='agency'?'agency-tech':'customer-card'}"><div class="header"><div><div class="brand">VOL<span>TECH</span></div><div class="subtitle">لتجارة الهواتف النقالة والاكسسورات والانظمة الذكية</div></div><div><div class="doc-title">${title}</div><div class="doc-sub">رقم الصيانة: <span class="number">${maintenanceEscape(r.receiptNo)}</span></div></div></div><div class="section"><div class="section-title">بيانات أساسية</div><div class="grid">${maintenancePrintField('الزبون',r.customerName)}${maintenancePrintField('الهاتف',r.customerPhone)}${maintenancePrintField('الفرع',r.branchName)}${maintenancePrintField('موظف الاستلام',r.receivedByName)}${maintenancePrintField('نوع القطعة',r.itemType==='device'?'جهاز':'اكسسوار')}${maintenancePrintField('الشركة / الموديل',`${r.company||''} ${r.model||r.itemName||''}`)}${maintenancePrintField('IMEI',r.imei||'-')}${maintenancePrintField('فاتورة البيع الأصلية',r.originalSaleInvoiceNo||'-')}</div></div><div class="section"><div class="section-title">وصف العطل</div><div class="fault">${maintenanceEscape(r.fault||'-')}</div></div>${isAgency?`<div class="section"><div class="section-title">بيانات الوكالة</div><div class="grid">${maintenancePrintField('الوكالة',r.agencyName||'-')}${maintenancePrintField('تاريخ التسليم',r.deliveredToAgencyDate||'يُحدد عند التسليم')}${maintenancePrintField('رقم وصل الوكالة',r.agencySlipNo||'-')}${maintenancePrintField('النتيجة',r.agencyResult||'-')}</div></div>`:''}<div class="signrow"><div class="sigbox">موظف الاستلام: <b>${maintenanceEscape(r.receivedByName||'-')}</b><div class="sigline"></div></div><div class="sigbox">${isAgency?'استلام الوكالة':'استلام الزبون'}<div class="sigline"></div></div></div></div>`;w.document.close();w.focus();setTimeout(()=>w.print(),300);}
+function printMaintenanceBundle(id,mode='both'){
+            if(!requireMaintenanceAccess())return; const r=maintenanceGet(id); if(!r)return; const w=window.open('','_blank','width=900,height=1000'); if(!w){alert('يرجى السماح بالنوافذ المنبثقة للطباعة.');return;}
+            const typeLabel=r.itemType==='device'?'جهاز':'اكسسوار', itemLabel=`${r.company||''} ${r.model||r.itemName||''}`.trim()||'-', field=(l,v)=>maintenancePrintField(l,v);
+            const customerPage=`<div class="sheet customer-card"><div class="header"><div><div class="brand">VOL<span>TECH</span></div><div class="subtitle">لتجارة الهواتف النقالة والاكسسوارات والانظمة الذكية</div></div><div><div class="doc-title">وصل استلام الصيانة للزبون</div><div class="doc-sub">رقم الوصل: <span class="number">${maintenanceEscape(r.receiptNo)}</span></div><div class="doc-sub">${maintenanceEscape(r.receivedDate||'')} — ${maintenanceEscape(r.receivedTime||'')}</div></div></div><div class="section"><div class="section-title">بيانات الزبون</div><div class="grid">${field('اسم الزبون',r.customerName)}${field('رقم الهاتف',r.customerPhone)}${field('فرع الاستلام',r.branchName)}${field('الموظف المستلم',r.receivedByName)}</div></div><div class="section"><div class="section-title">بيانات القطعة</div><div class="grid">${field('نوع القطعة',typeLabel)}${field('الشركة / الموديل',itemLabel)}${field('اللون',r.color||'-')}${field('الذاكرة / السعة',r.memory||'-')}${field('IMEI',r.imei||'-')}${field('الباركود',r.barcode||'-')}${field('فاتورة البيع الأصلية',r.originalSaleInvoiceNo||'-')}${field('فرع البيع الأصلي',r.originalSaleBranchName||'-')}</div></div><div class="section"><div class="section-title">وصف العطل</div><div class="fault">${maintenanceEscape(r.fault||'-')}</div></div><div class="notice"><b>ملاحظة:</b> هذا الوصل يثبت استلام القطعة للصيانة ويُستخدم كمرجع عند الاستلام.</div><div class="signrow"><div class="sigbox">${maintenanceEscape(r.receivedByName||'-')}<div class="sigline"></div></div><div class="sigbox">استلام الزبون<div class="sigline"></div></div></div><div class="footer"><span>VOLTECH — قسم الصيانة</span><span>وصل صيانة رقم ${maintenanceEscape(r.receiptNo)}</span></div></div>`;
+            const agencyPage=`<div class="sheet agency-tech"><div class="header"><div><div class="brand">VOL<span>TECH</span></div><div class="subtitle">لتجارة الهواتف النقالة والاكسسوارات والانظمة الذكية</div></div><div><div class="doc-title">ورقة تسليم الصيانة للوكالة</div><div class="doc-sub">مرجع الصيانة: <span class="number">${maintenanceEscape(r.receiptNo)}</span></div><div class="doc-sub">تاريخ الاستلام: ${maintenanceEscape(r.receivedDate||'')}</div></div></div><div class="section"><div class="section-title">بيانات التسليم</div><div class="grid">${field('الوكالة',r.agencyName||'-')}${field('فرع VOLTECH',r.branchName)}${field('الموظف المستلم',r.receivedByName)}${field('تاريخ التسليم للوكالة',r.deliveredToAgencyDate||'يُحدد عند التسليم')}</div></div><div class="section"><div class="section-title">بيانات القطعة الفنية</div><div class="grid">${field('نوع القطعة',typeLabel)}${field('الشركة / الموديل',itemLabel)}${field('اللون',r.color||'-')}${field('الذاكرة / السعة',r.memory||'-')}${field('IMEI',r.imei||'-')}${field('الباركود',r.barcode||'-')}${field('فاتورة البيع الأصلية',r.originalSaleInvoiceNo||'-')}${field('فرع البيع الأصلي',r.originalSaleBranchName||'-')}${field('رقم وصل الوكالة',r.agencySlipNo||'غير متوفر')}</div></div><div class="section"><div class="section-title">بلاغ العطل والنتيجة الفنية</div><div class="fault"><b>العطل:</b><br>${maintenanceEscape(r.fault||'-')}<br><br><b>النتيجة:</b><br>${maintenanceEscape(r.agencyResult||'-')}<br><br><b>القطع المستبدلة:</b><br>${maintenanceEscape(r.replacedParts||'-')}<br><br><b>ملاحظات الوكالة:</b><br>${maintenanceEscape(r.agencyNotes||'-')}</div></div><div class="notice"><b>ملاحظة للوكالة:</b> يرجى تثبيت نتيجة الفحص والإصلاح والقطع المستبدلة وإعادة القطعة مع رقم وصل الوكالة إن وجد.</div><div class="signrow"><div class="sigbox">${maintenanceEscape(r.receivedByName||'-')}<div class="sigline"></div></div><div class="sigbox">استلام الوكالة<div class="sigline"></div></div></div><div class="footer"><span>VOLTECH — ورقة وكالة الصيانة</span><span>مرجع الصيانة ${maintenanceEscape(r.receiptNo)}</span></div></div>`;
+            const pages=mode==='customer'?customerPage:(mode==='agency'?agencyPage:customerPage+agencyPage); w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>صيانة ${maintenanceEscape(r.receiptNo)}</title><style>${maintenancePrintStyles()}</style></head><body>${pages}</body></html>`); w.document.close(); w.focus(); setTimeout(()=>w.print(),300);
+        }
+function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess())return;return printMaintenanceBundle(id,type==='customer'||type==='agency'?type:'both');}
 
         let centralBranchFundsChartInstance=null, centralBranchProfitChartInstance=null, centralMonthlyProfitChartInstance=null;
         function centralMonthKeyFromDate(dt){return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}`;}
@@ -3253,6 +3221,35 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             logAction("المسؤول العام", "تعديل ضمان VIP", `تم ضبط سعر ضمان VIP المعتمد إلى ${vipWarrantyPrice.toLocaleString()} د.ع`);
         }
 
+        function toggleSalesNamesManager(){
+            if(!requireRole(['admin'],'إدارة أسماء موظفي المبيعات متاحة للمدير العام فقط.')) return;
+            const box=document.getElementById('salesNamesManager');
+            const btn=document.getElementById('salesNamesToggleBtn');
+            if(!box) return;
+            const open=box.style.display!=='none';
+            box.style.display=open?'none':'block';
+            if(btn) btn.innerHTML=open
+                ?'<i class="fa-solid fa-id-card"></i> إضافة اسم موظف المبيعات للفواتير'
+                :'<i class="fa-solid fa-chevron-up"></i> إخفاء أسماء موظفي المبيعات';
+            if(!open) renderSalesNamesManager();
+        }
+
+        function syncNewAccountNameField(){
+            const role=document.getElementById('newAccRole')?.value;
+            const wrap=document.getElementById('newAccNameWrap');
+            if(!wrap) return;
+            const current=document.getElementById('newAccName')?.value||'';
+            if(role==='employee'){
+                const names=[...new Set((Array.isArray(salesInvoiceNames)?salesInvoiceNames:[]).map(n=>String(n||'').trim()).filter(Boolean))];
+                wrap.innerHTML='<label>اسم الموظف:</label><select id="newAccName"><option value="">اختر اسم موظف المبيعات</option>'+
+                    names.map(n=>`<option value="${String(n).replace(/"/g,'&quot;')}">${n}</option>`).join('')+'</select>';
+                if(current && names.includes(current)) document.getElementById('newAccName').value=current;
+            }else{
+                wrap.innerHTML='<label>اسم الموظف:</label><input id="newAccName" placeholder="مثال: أحمد خالد" type="text"/>';
+                if(current) document.getElementById('newAccName').value=current;
+            }
+        }
+
         async function addNewUserAccount(){
             // إنشاء مستخدمي النظام حصراً بواسطة المسؤول العام.
             if(!requireRole(['admin'],'إضافة مستخدمي النظام متاحة للمسؤول العام فقط.')) return;
@@ -3273,6 +3270,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             const sel=document.getElementById('newAccBranch'); if(!sel) return;
             sel.innerHTML=branches.filter(b=>b.active!==false).map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
             if(!sel.value) sel.value=String(currentBranchId);
+            syncNewAccountNameField();
         }
 
         function renderUsersManageTable() {
@@ -3364,23 +3362,9 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             return Math.max(0,itemsTotal+warrantyCost-discount);
         }
 
-        function refreshDebtAccountSuggestions(){
-            const sel=document.getElementById('debtEntityName'); if(!sel)return;
-            const currentId=document.getElementById('debtAccountId')?.value||'';
-            const accounts=(accountsList||[]).filter(a=>a && ![900001,900002,900003].includes(Number(a.id)));
-            sel.innerHTML='<option value="">اختر الشخص أو الشركة</option>'+accounts.map(a=>`<option value="${String(a.id)}">${String(a.name||'')} — ${a.entityType==='company'?'شركة':'شخص'}</option>`).join('');
-            if(currentId && accounts.some(a=>String(a.id)===String(currentId))) sel.value=String(currentId);
-        }
+        
 
-        function updateDebtAccountSelection(){
-            const sel=document.getElementById('debtEntityName'), hidden=document.getElementById('debtAccountId'), hint=document.getElementById('debtAccountSelectionHint');
-            if(!sel||!hidden)return null;
-            const id=String(sel.value||'');
-            const acc=(accountsList||[]).find(a=>a && ![900001,900002,900003].includes(Number(a.id)) && String(a.id)===id) || null;
-            hidden.value=acc?String(acc.id):'';
-            if(hint)hint.innerHTML=acc?`<span style="color:var(--accent-green);font-weight:700;">تم اختيار الحساب: ${acc.name} (${acc.entityType==='company'?'شركة':'شخص'})</span>`:'<span style="color:var(--accent-red);">يجب اختيار اسم حساب موجود مسبقاً.</span>';
-            return acc;
-        }
+        
 
         function updateMixedPaymentSummary(){
             const total=getCurrentInvoiceGrandTotal();
@@ -3465,15 +3449,13 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
         }
         function ensureAllBranchAccounts(){
             const allBranches=branches||[];
-            // كل فرع يرى حسابات الفروع الأخرى فقط؛ لا يظهر حساب الفرع لنفسه.
-            // أرصدة وحركات كل حساب تبقى محفوظة داخل Snapshot الخاص بالفرع الذي يعرضه.
+            // كل فرع يرى حسابات الفروع الأخرى أيضاً، حتى تبقى حركات الإرسال والاستلام
+            // ممكنة من أي فرع وبشكل مستقل، من دون إنشاء سند للطرف الآخر تلقائياً.
             allBranches.forEach(targetBranch=>{
-                if(Number(targetBranch.id)!==Number(currentBranchId)) ensureBranchAccountInList(accountsList,targetBranch);
+                ensureBranchAccountInList(accountsList,targetBranch);
                 Object.keys(branchDataStore||{}).forEach(k=>{
                     const d=branchDataStore[k];
-                    if(d && Array.isArray(d.accountsList) && Number(k)!==Number(targetBranch.id)){
-                        ensureBranchAccountInList(d.accountsList,targetBranch);
-                    }
+                    if(d && Array.isArray(d.accountsList)) ensureBranchAccountInList(d.accountsList,targetBranch);
                 });
             });
         }
@@ -4134,8 +4116,9 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
                 p.lastPaymentBy=loggedInUser.name;
                 p.lastPaymentSource=sourceName;
                 p.paymentHistory=Array.isArray(p.paymentHistory)?p.paymentHistory:[];
+                const paymentHistoryId=Date.now()+Math.floor(Math.random()*1000);
                 p.paymentHistory.unshift({
-                    id:Date.now()+Math.floor(Math.random()*1000),
+                    id:paymentHistoryId,
                     amount:entered,
                     currency,
                     exchangeRate:rate,
@@ -4187,7 +4170,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
                     loggedInUser.name,
                     'تسديد قائمة مشتريات آجلة',
                     `تم تسديد ${formatPurchaseMoney(entered,currency)} من قائمة المورد ${p.supplier} رقم ${p.invoiceNo||'-'} — الأثر النقدي ${iqdeffect.toLocaleString('ar-IQ')} د.ع من ${sourceName}`,
-                    {kind:'purchaseDebtSettlement',purchaseId:p.id,paymentType:'debt',accountId:acc.id,amount:entered,currency,exchangeRate:rate,iqdeffect,source,done:false}
+                    {kind:'purchaseDebtSettlement',purchaseId:p.id,paymentType:'debt',accountId:acc.id,amount:entered,currency,exchangeRate:rate,iqdeffect,source,paymentHistoryId,done:false}
                 );
                 closePurchasePaymentModal();
                 alert(newRemaining<=0.000001 ? 'تم تسديد القائمة بالكامل وتسجيل التسديد في سجل المشتريات وحساب المورد.' : `تم تسجيل التسديد. المتبقي ${formatPurchaseMoney(newRemaining,currency)}.`);
@@ -4673,27 +4656,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
         }
         function deleteWarehouseDevice(imei){ if(!isGeneralManager()){alert('حذف عناصر المستودع متاح للمدير العام فقط.');return;} let i=warehouseDevicesList.findIndex(x=>String(x.imei)===String(imei)); if(i<0)return; let d=warehouseDevicesList[i]; if(!confirm(`حذف الجهاز ${d.company||''} ${d.model||''}؟`))return; warehouseDevicesList.splice(i,1); renderWarehouseDevicesTable(); updateCompanyFilters(); logAction(loggedInUser.name,'حذف جهاز من المستودع',`تم حذف ${d.company||''} ${d.model||''} — IMEI ${d.imei}`); }
 
-        function editWarehouseAccessory(barcode) {
-            if(!canEditWarehouseFull()){alert("تعديل جميع تفاصيل عناصر المستودع متاح للمدير العام فقط.");return;}
-            let a=warehouseAccessoriesList.find(x=>String(x.barcode)===String(barcode)); if(!a)return;
-            let company=prompt("الشركة:",a.company||""); if(company===null)return;
-            let name=prompt("اسم الاكسسوار:",a.name||""); if(name===null)return;
-            let color=prompt("اللون:",a.color||""); if(color===null)return;
-            let memory=prompt("الذاكرة / السعة:",a.memory||""); if(memory===null)return;
-            let newBarcode=prompt("الباركود:",a.barcode||""); if(newBarcode===null)return;
-            let imei=prompt("IMEI / السيريال:",a.imei||""); if(imei===null)return;
-            let qty=prompt("العدد:",String(a.qty==null?1:a.qty)); if(qty===null)return;
-            let costUSD=prompt("سعر التكلفة بالدولار:",String(a.costUSD||0)); if(costUSD===null)return;
-            let costIQD=prompt("سعر التكلفة بالدينار:",String(a.costIQD||0)); if(costIQD===null)return;
-            let priceUSD=prompt("سعر البيع بالدولار:",String(a.priceUSD||0)); if(priceUSD===null)return;
-            let priceIQD=prompt("سعر البيع بالدينار:",String(a.priceIQD||0)); if(priceIQD===null)return;
-            let supplier=prompt("المورد:",a.supplier||""); if(supplier===null)return;
-            newBarcode=newBarcode.trim(); qty=parseInt(qty);
-            if(!company.trim()||!name.trim()||!newBarcode||!Number.isFinite(qty)||qty<0){alert("البيانات غير صحيحة.");return;}
-            if(warehouseAccessoriesList.some(x=>x!==a&&String(x.barcode)===newBarcode)){alert("هذا الباركود مستخدم لاكسسوار آخر.");return;}
-            Object.assign(a,{company:company.trim(),name:name.trim(),color:color.trim(),memory:memory.trim(),barcode:newBarcode,imei:imei.trim(),qty,costUSD:parseFloat(costUSD)||0,costIQD:parseFloat(costIQD)||0,priceUSD:parseFloat(priceUSD)||0,priceIQD:parseFloat(priceIQD)||0,supplier:supplier.trim()});
-            renderWarehouseAccessoriesTable(); updateCompanyFilters(); logAction(loggedInUser.name,"تعديل كامل اكسسوار بالمستودع",`تم تعديل جميع بيانات الاكسسوار ${a.name}`);
-        }
+        
         function startWarehouseAccessoryEdit(barcode){
             if(!isGeneralManager()){alert('تعديل عناصر المستودع متاح للمدير العام فقط.');return;}
             let a=warehouseAccessoriesList.find(x=>String(x.barcode)===String(barcode)); if(!a)return;
@@ -4712,25 +4675,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
         }
         function deleteWarehouseAccessory(barcode){ if(!isGeneralManager()){alert('حذف عناصر المستودع متاح للمدير العام فقط.');return;} let i=warehouseAccessoriesList.findIndex(x=>String(x.barcode)===String(barcode)); if(i<0)return; let a=warehouseAccessoriesList[i]; if(!confirm(`حذف الاكسسوار ${a.company||''} ${a.name||''}؟`))return; warehouseAccessoriesList.splice(i,1); renderWarehouseAccessoriesTable(); updateCompanyFilters(); logAction(loggedInUser.name,'حذف اكسسوار من المستودع',`تم حذف ${a.company||''} ${a.name||''} — باركود ${a.barcode}`); }
 
-        function editWarehouseDevice(id) {
-            if(!canEditWarehouseFull()){alert("تعديل جميع تفاصيل عناصر المستودع متاح للمدير العام فقط.");return;}
-            let d=warehouseDevicesList.find(x=>x.id===id||x.imei===id); if(!d)return;
-            let company=prompt("الشركة:",d.company||""); if(company===null)return;
-            let model=prompt("اسم / موديل الجهاز:",d.model||""); if(model===null)return;
-            let color=prompt("اللون:",d.color||""); if(color===null)return;
-            let memory=prompt("الذاكرة:",d.memory||""); if(memory===null)return;
-            let imei=prompt("IMEI:",d.imei||""); if(imei===null)return;
-            let barcode=prompt("باركود الجهاز:",d.barcode||""); if(barcode===null)return;
-            let costUSD=prompt("سعر التكلفة بالدولار:",String(d.costUSD||0)); if(costUSD===null)return;
-            let costIQD=prompt("سعر التكلفة بالدينار:",String(d.costIQD||0)); if(costIQD===null)return;
-            let priceUSD=prompt("سعر البيع بالدولار:",String(d.priceUSD||0)); if(priceUSD===null)return;
-            let priceIQD=prompt("سعر البيع بالدينار:",String(d.priceIQD||0)); if(priceIQD===null)return;
-            let supplier=prompt("المورد:",d.supplier||""); if(supplier===null)return;
-            imei=imei.trim(); barcode=barcode.trim();
-            if(!/^[0-9A-Za-z-]{5,}$/.test(imei)||warehouseDevicesList.some(x=>x!==d&&x.imei===imei)){alert("IMEI غير صالح أو مستخدم لجهاز آخر.");return;}
-            Object.assign(d,{company:company.trim(),model:model.trim(),color:color.trim(),memory:memory.trim(),imei,barcode,costUSD:parseFloat(costUSD)||0,costIQD:parseFloat(costIQD)||0,priceUSD:parseFloat(priceUSD)||0,priceIQD:parseFloat(priceIQD)||0,supplier:supplier.trim()});
-            renderWarehouseDevicesTable(); updateCompanyFilters(); logAction(loggedInUser.name,"تعديل كامل جهاز بالمستودع",`تم تعديل جميع بيانات الجهاز ${d.model}`);
-        }
+        
 
         function addNewManualAccount() {
             if(!loggedInUser || !['admin','manager','accountant'].includes(loggedInUser.role)){alert("إضافة الحسابات متاحة للمدير العام ومدير الفرع والمحاسب فقط.");return;}
@@ -4781,11 +4726,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             logAction(loggedInUser.name, "مصروف عام", `تم استقطاع ${amount.toLocaleString()} د.ع من الكاشير. البيان: ${note}`,{kind:'generalExpense',amount,voucherId:null,expenseId:Date.now(),done:false}); saveAllAppState();
         }
 
-        function toggleGeneralExpensePanel(){
-            if(!loggedInUser || !['admin','manager','accountant'].includes(loggedInUser.role))return;
-            let box=document.getElementById('generalExpenseBox'); if(!box)return; box.style.display=box.style.display==='none'?'block':'none';
-            if(box.style.display==='block')document.getElementById('generalExpenseAmount')?.focus();
-        }
+        
         function toggleNewAccountPanel(){
             if(!loggedInUser || !['admin','manager','accountant'].includes(loggedInUser.role))return;
             let box=document.getElementById('newAccountPanel'); if(!box)return; box.style.display=box.style.display==='none'?'grid':'none';
@@ -4800,7 +4741,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
         }
         function refreshVoucherAccountSelect(){
             let sel=document.getElementById('voucherAccountSelect'); if(!sel)return;
-            sel.innerHTML=accountsList.filter(a=>!(isBranchAccount(a)&&Number(a.branchId)===Number(currentBranchId))).map(a=>`<option value="${a.id}">${a.name}</option>`).join('');
+            sel.innerHTML=accountsList.map(a=>`<option value="${a.id}">${a.name}</option>`).join('');
         }
         function addAccountVoucher(){
             if(!loggedInUser || !['admin','manager','accountant'].includes(loggedInUser.role)){alert('سندات الحسابات متاحة للمدير العام ومدير الفرع والمحاسب.');return;}
@@ -4814,6 +4755,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             if(!acc.vouchers) acc.vouchers=[];
             let now=new Date();
             let voucher={id:Date.now()+Math.floor(Math.random()*1000),type,amount:Number(amount),note,date:now.toLocaleDateString('ar-IQ'),time:now.toLocaleTimeString('ar-IQ'),employee:loggedInUser.name,source};
+            let appliedToPayable=0;
             acc.vouchers.unshift(voucher);
 
             // حسابات الفروع: حركة مستقلة يدوياً لكل فرع. لا ينشئ النظام سند الطرف الآخر تلقائياً.
@@ -4852,6 +4794,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             const payableOpen=Math.max(0,(acc.payableTotal||0)-(acc.payablePaid||0));
             if(type==='payment' && payableOpen>0){
                 const applied=Math.min(amount,payableOpen);
+                appliedToPayable=applied;
                 acc.payablePaid=(acc.payablePaid||0)+applied;
                 acc.payableRemaining=Math.max(0,(acc.payableTotal||0)-acc.payablePaid);
                 if(source==='vault') vaultBalance-=amount; else cashierBalance-=amount;
@@ -4876,7 +4819,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
 
             document.getElementById('voucherAmount').value=''; document.getElementById('voucherNote').value='';
             renderAccountsTable(); updateTreasuryDisplay();
-            logAction(loggedInUser.name,type==='receipt'?'سند قبض على حساب':'سند صرف على حساب',`الحساب: ${acc.name} | المبلغ: ${amount.toLocaleString()} د.ع | المصدر: ${source==='vault'?'القاصة':'الكاشير'} | البيان: ${note}`,{kind:'accountVoucher',accountId:acc.id,voucherId:voucher.id,type,source,amount,done:false});
+            logAction(loggedInUser.name,type==='receipt'?'سند قبض على حساب':'سند صرف على حساب',`الحساب: ${acc.name} | المبلغ: ${amount.toLocaleString()} د.ع | المصدر: ${source==='vault'?'القاصة':'الكاشير'} | البيان: ${note}`,{kind:'accountVoucher',accountId:acc.id,voucherId:voucher.id,type,source,amount,appliedToPayable:Number(appliedToPayable)||0,done:false});
             alert(`تم تسجيل ${type==='receipt'?'سند القبض':'سند الصرف'} وربطه بحساب «${acc.name}» بنجاح.`); saveAllAppState();
         }
         function resetAccountBalance(index){
@@ -4970,9 +4913,9 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             let searchQuery = document.getElementById("searchAccountsInput") ? document.getElementById("searchAccountsInput").value.trim().toLowerCase() : "";
 
             let filtered = accountsList.filter(acc => {
-                // حساب الفرع الحالي لا يظهر لنفس الفرع، بينما تبقى حسابات باقي الفروع ظاهرة.
-                const selfBranch = isBranchAccount(acc) && Number(acc.branchId)===Number(currentBranchId);
-                return !selfBranch && (!searchQuery || acc.name.toLowerCase().includes(searchQuery));
+                // حساب الفرع الحالي لا يظهر داخل صفحة حسابات نفس الفرع، لكن يبقى ظاهراً للفروع الأخرى.
+                if(isBranchAccount(acc) && Number(acc.branchId)===Number(currentBranchId)) return false;
+                return !searchQuery || acc.name.toLowerCase().includes(searchQuery);
             });
 
             if(filtered.length === 0) {
@@ -4989,7 +4932,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
                 const payableRemaining = isBranchAccount ? Math.max(0, -branchBalance) : Math.max(0, Number(acc.payableRemaining||0));
                 tbody.innerHTML += `
                     <tr>
-                        <td><b>${acc.name}</b><br><small style="color:var(--text-muted);">${isBranchAccount?'فرع':(acc.entityType==='company'?'شركة':(isFixedSystemAccount(acc)?'حساب تشغيلي':'شخص'))}</small></td>
+                        <td><button type="button" onclick="toggleAccountMovements(${acc.id})" style="background:none;border:0;padding:0;cursor:pointer;color:inherit;text-align:right;"><b>${acc.name}</b></button><br><small style="color:var(--text-muted);">${isBranchAccount?'فرع':(acc.entityType==='company'?'شركة':(isFixedSystemAccount(acc)?'حساب تشغيلي':'شخص'))}</small></td>
                         <td style="font-weight:bold;color:${isFixedSystemAccount(acc)||isBranchAccount?'var(--accent-blue)':'var(--text-muted)'};">${isFixedSystemAccount(acc)?`${Number(acc.operationalBalance||0).toLocaleString()} د.ع`:isBranchAccount?`${Math.abs(branchBalance).toLocaleString()} د.ع`:'—'}</td>
                         <td style="color:var(--accent-red);font-weight:bold;">${payableRemaining.toLocaleString()} د.ع${payableRemaining>0?'<br><small style=\"color:#ff8a8a\">متبقي علينا</small>':''}</td>
                         <td style="color:var(--accent-green);font-weight:bold;">${receivableRemaining.toLocaleString()} د.ع${receivableRemaining>0?'<br><small style=\"color:#8ff0b4\">متبقي لنا</small>':''}</td>
@@ -5037,6 +4980,16 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
                     <b>رصيد حركة الفرع:</b> ${Math.abs(branchBalance).toLocaleString()} د.ع
                     <span style="color:${branchBalance>=0?'var(--accent-green)':'var(--accent-red)'};margin-right:8px;">${branchBalance>0?'مطلوب لنا على الفرع':branchBalance<0?'مطلوب علينا للفرع':'متوازن'}</span>
                 </div>` : ''}`;
+            const isCompany=acc.entityType==='company' && !isFixedSystemAccount(acc);
+            if(isCompany){
+                const usdTotal=Math.max(0,Number(acc.payableUSD||0)), usdPaid=Math.max(0,Number(acc.payablePaidUSD||0)), usdPayable=Math.max(0,usdTotal-usdPaid);
+                const iqdReceivable=Math.max(0,Number(acc.remaining||0)), iqdPayable=Math.max(0,Number(acc.payableRemaining||0));
+                const netIQD=iqdReceivable-iqdPayable;
+                html+=`<div style="margin-bottom:12px;overflow:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;text-align:center;"><thead><tr><th style="padding:8px;border-bottom:1px solid #3498db;">العملة</th><th style="padding:8px;border-bottom:1px solid #3498db;">مطلوب لي</th><th style="padding:8px;border-bottom:1px solid #3498db;">مطلوب مني</th><th style="padding:8px;border-bottom:1px solid #3498db;">الرصيد الحالي</th></tr></thead><tbody>
+                    <tr><td style="padding:8px;">USD</td><td style="padding:8px;">0.00 $</td><td style="padding:8px;color:var(--accent-red);font-weight:800;">${usdPayable.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} $</td><td style="padding:8px;font-weight:800;">${(-usdPayable).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} $</td></tr>
+                    <tr><td style="padding:8px;">د.ع</td><td style="padding:8px;color:var(--accent-green);font-weight:800;">${iqdReceivable.toLocaleString('ar-IQ')} د.ع</td><td style="padding:8px;color:var(--accent-red);font-weight:800;">${iqdPayable.toLocaleString('ar-IQ')} د.ع</td><td style="padding:8px;font-weight:800;">${netIQD.toLocaleString('ar-IQ')} د.ع</td></tr>
+                </tbody></table></div>`;
+            }
             if(!history.length){
                 html+=`<div style="padding:10px;color:var(--text-muted);font-size:12px;">لا توجد حركات مسجلة لهذا الحساب.</div>`;
             } else {
@@ -5094,14 +5047,10 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             document.getElementById("transferAmount").value = "";
             updateTreasuryDisplay();
             alert("تم تنفيذ التحويل بنجاح!");
-            logAction(loggedInUser.name, "تحويل مالي", `تم تحويل ${amount.toLocaleString()} د.ع (${direction === 'cashierToVault' ? 'من الكاشير إلى القاصة' : 'من القاصة إلى الكاشير'})`);
+            logAction(loggedInUser.name, "تحويل مالي", `تم تحويل ${amount.toLocaleString()} د.ع (${direction === 'cashierToVault' ? 'من الكاشير إلى القاصة' : 'من القاصة إلى الكاشير'})`, {kind:'treasuryTransfer',direction,amount:Number(amount),done:false});
         }
 
-        function getSalesNamesForUser(u){
-            if(!u) return [];
-            if(!Array.isArray(u.salesInvoiceNames)) u.salesInvoiceNames=[];
-            return u.salesInvoiceNames.filter(n=>String(n||'').trim()).map(n=>String(n).trim());
-        }
+        
 
         function refreshInvoiceEmployeeSelect(){
             const sel=document.getElementById('invoiceEmployeeSelect');
@@ -5181,7 +5130,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
 
         let employeeSalesDetailsOpen=false;
         let employeeSalesDetailsName='';
-            maintenanceReceiptCounter=1; maintenanceRecords=[]; maintenanceAgencies=[]; maintenanceFinancialLog=[]; maintenanceNotifications=[]; maintenanceMonthlyProfitState={};
+            maintenanceReceiptCounter=1; maintenanceRecords=[]; maintenanceAgencies=[]; maintenanceNotifications=[];
 
         function showEmployeeSalesDetails(name){
             if(!loggedInUser || loggedInUser.role!=='admin') return;
@@ -5201,16 +5150,8 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             if(inv&&inv.id){const d=new Date(inv.id);if(!Number.isNaN(d.getTime()))return d;}
             return new Date();
         }
-        function calculateDailyProfit(){
-            let now=new Date(), y=now.getFullYear(), m=now.getMonth(), d=now.getDate();
-            return [...deviceInvoicesArchive,...accessoryInvoicesArchive].reduce((sum,inv)=>{let dt=getInvoiceDateObject(inv); return sum+(dt.getFullYear()===y&&dt.getMonth()===m&&dt.getDate()===d?calculateInvoiceProfit(inv):0);},0);
-        }
-        function calculateMonthlyCycleProfit(){
-            let now=new Date();
-            let start=new Date(now.getFullYear(), now.getMonth(), 1);
-            let end=new Date(now.getFullYear(), now.getMonth()+1, 1);
-            return [...deviceInvoicesArchive,...accessoryInvoicesArchive].reduce((sum,inv)=>{let dt=getInvoiceDateObject(inv); return sum+(dt>=start&&dt<end&&Number(inv.id||0)>=Number(financeBaseline||0)?calculateInvoiceProfit(inv):0);},0);
-        }
+        
+        
 
         function issueMonthlyAccountsReport(){
             if(!loggedInUser || loggedInUser.role!=='admin'){alert('تقرير المبيعات الشهرية متاح للمسؤول العام فقط.');return;}
@@ -5234,7 +5175,6 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
         }
 
         function renderFinanceDashboard() {
-            renderMaintenanceProfitCard();
             if(!financeBaselineInitialized){ initializeFinanceBaselineOnce(); }
             if(!dailyFinanceState || Number(dailyFinanceState.lastResetAt||0) < Number(financeBaseline||0)) { dailyFinanceState=financeZeroState(); dailyFinanceState.lastResetAt=String(financeBaseline||''); persistDailyFinanceState(); }
             // بطاقات الحسابات الأساسية تبدأ بصفر، ولا تُحتسب قيمة المخزون التجريبي الموجود مسبقاً.
@@ -5374,10 +5314,8 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             else if(paymentType==='installment'){installmentDown=Math.max(0,Number(document.getElementById('installmentDownPayment').value)||0);if(!isValidMoney(installmentDown)||installmentDown>total){alert('الدفعة الأولى لا يمكن أن تكون أكبر من إجمالي الفاتورة.');return;}}
             else if(paymentType==='mixed'){posPaid=Math.max(0,Number(document.getElementById('mixedPosAmount').value)||0);cashPaid=Math.max(0,Number(document.getElementById('mixedCashAmount').value)||0);if(!isValidMoney(posPaid)||!isValidMoney(cashPaid)||posPaid+cashPaid!==total){alert('في الدفع المختلط يجب أن يساوي مجموع POS والكاش إجمالي الفاتورة بالكامل.');return;}if(posPaid<=0||cashPaid<=0){alert('الدفع المختلط يتطلب مبلغاً موجباً في POS ومبلغاً موجباً في الكاش.');return;}}
             try{commitInvoiceStock(clonedItems);}catch(e){console.error(e);alert('تعذر تثبيت حركة المخزون. لم يتم إصدار الفاتورة.');return;}
-            const accById=id=>(accountsList||[]).find(a=>Number(a.id)===Number(id));
             if(paymentType==='cash'){cashPaid=total;cashierBalance+=total;}
             else if(paymentType==='pos'){posPaid=total;const pa=ensureSinglePosAccount();pa.operationalBalance=Number(pa.operationalBalance||0)+total;pa.total=(Number(pa.total)||0)+total;pa.paid=(Number(pa.paid)||0)+total;pa.remaining=Math.max(0,pa.total-pa.paid);addAccountPaymentHistoryMeta(pa,total,`فاتورة POS رقم ${invoiceNo}`,{invoiceId,ledgerType:'sale'});vaultBalance+=total;}
-            else if(paymentType==='debt'){restoreInvoiceStock(clonedItems);alert('آلية السداد بالآجل غير متاحة داخل فاتورة المبيعات. استخدم سند القبض/الصرف من الحسابات والديون.');return;}
             else if(paymentType==='installment'){const acc=ensureInstallmentAccount();acc.total=(Number(acc.total)||0)+total;acc.paid=(Number(acc.paid)||0)+installmentDown;acc.remaining=Math.max(0,acc.total-acc.paid);if(installmentDown>0)addAccountPaymentHistoryMeta(acc,installmentDown,`دفعة أولى على الفاتورة رقم ${invoiceNo}`,{invoiceId,ledgerType:'installment'});linkedAccountId=acc.id;cashPaid=installmentDown;cashierBalance+=installmentDown;}
             else if(paymentType==='mixed'){const pa=ensureSinglePosAccount();pa.operationalBalance=Number(pa.operationalBalance||0)+posPaid;pa.total=(Number(pa.total)||0)+posPaid;pa.paid=(Number(pa.paid)||0)+posPaid;pa.remaining=Math.max(0,pa.total-pa.paid);addAccountPaymentHistoryMeta(pa,posPaid,`دفعة POS مختلطة — فاتورة رقم ${invoiceNo}`,{invoiceId,ledgerType:'sale'});vaultBalance+=posPaid;cashierBalance+=cashPaid;}
             const newArchivedInvoice={id:invoiceId,invoiceNo,date:now.toLocaleDateString('ar-IQ'),time:now.toLocaleTimeString('ar-IQ'),dateISO:now.toLocaleDateString('en-CA'),dateEn:now.toLocaleDateString('en-US'),timeEn:now.toLocaleTimeString('en-US'),clientName,clientPhone,employeeName,category:cat,warranty,paymentType,items:clonedItems,warrantyCost,discountVal,totalAmount:total,status:'active',cancelReason:'',cancelledBy:'',cancelledAt:'',linkedAccountId,debtPaidAmount:debtPaid,installmentDownPayment:installmentDown,cashPaidAmount:cashPaid,posPaidAmount:posPaid,contentDescription:buildInvoiceContentDescription(cat,clonedItems)};
@@ -5582,7 +5520,11 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             if(cashPaid>0)cashierBalance=Math.max(0,Number(cashierBalance||0)-cashPaid);
             if(posPaid>0){vaultBalance=Math.max(0,Number(vaultBalance||0)-posPaid);const pa=ensureSinglePosAccount();pa.operationalBalance=Number(pa.operationalBalance||0)-posPaid;pa.total=Math.max(0,(Number(pa.total)||0)-posPaid);pa.paid=Math.max(0,(Number(pa.paid)||0)-posPaid);pa.remaining=Math.max(0,pa.total-pa.paid);removeInvoiceLinkedAccountHistory(inv);}
             if(inv.linkedAccountId!=null&&!posPaid){const acc=accountsList.find(a=>Number(a.id)===Number(inv.linkedAccountId));if(acc){const upfront=inv.paymentType==='debt'?Number(inv.debtPaidAmount||0):Number(inv.installmentDownPayment||0);acc.total=Math.max(0,(Number(acc.total)||0)-total);acc.paid=Math.max(0,(Number(acc.paid)||0)-upfront);acc.remaining=Math.max(0,acc.total-acc.paid);removeInvoiceLinkedAccountHistory(inv);}}
-            recordDailyInvoice(inv,-1);renderWarehouseDevicesTable();renderWarehouseAccessoriesTable();renderAccountsTable();updateTreasuryDisplay();saveAllAppState();
+            // إذا كانت الفاتورة من دورة يومية سابقة، لا نعيد خصمها من أرباح/مبيعات اليوم الجديد.
+            // الأثر النقدي والحسابات أعلاه يُعكس فعلياً، أما مؤشر أرباح اليوم فيبقى خاصاً بالدورة الحالية.
+            const dailyCycleStart=Number(dailyFinanceState?.lastResetAt||financeBaseline||0);
+            if(Number(inv.id||0)>=dailyCycleStart) recordDailyInvoice(inv,-1);
+            renderWarehouseDevicesTable();renderWarehouseAccessoriesTable();renderAccountsTable();updateTreasuryDisplay();saveAllAppState();
         }
 
         function cancelAndRefundInvoice(id, type) {
@@ -5595,7 +5537,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             alert('تم إلغاء القائمة بنجاح، وإعادة المنتجات وتعديل الأثر المالي.');
         }
 
-        function setLogsCategory(cat){ document.getElementById("logsCategoryFilter").value=cat; renderLogsTable(); }
+        
         function renderLogsTable() {
             let tbody=document.querySelector("#logsTable tbody"); if(!tbody)return; tbody.innerHTML="";
             let cat=document.getElementById("logsCategoryFilter")?.value||"all";
@@ -5631,6 +5573,7 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
             invoiceCounter=1;
             purchaseInvoiceCounter=1;
             notificationsList=[];
+            maintenanceReceiptCounter=1; maintenanceRecords=[]; maintenanceAgencies=[]; maintenanceNotifications=[];
             currentInvoiceItems=[];
             pendingBatchItems=[];
 
@@ -5687,6 +5630,11 @@ function printMaintenanceSlip(id,type='customer'){if(!requireMaintenanceAccess()
                 return false;
             }catch(e){ console.error('Authoritative startup v14 error:',e); return false; }
         }
+
+        // ===== VOLTECH SUPABASE READY CONTRACT =====
+        // لا توجد مفاتيح سرية هنا. الربط الفعلي يتم لاحقاً عبر publishable key + Auth + RLS + Postgres RPC.
+        const VOLTECH_SUPABASE_READY={enabled:false,provider:'supabase',serviceRoleKeyAllowedInBrowser:false,branchScopedTables:['sales_invoices','sales_invoice_items','sale_payments','purchase_invoices','purchase_invoice_items','purchase_payments','accounts','account_ledger','device_stock','accessory_stock','inventory_movements','audit_logs','daily_reports','monthly_reports','maintenance_records','maintenance_agencies','maintenance_notifications'],centralTables:['company_settings','device_catalog','accessory_catalog','brands','warehouses'],rpcTransactions:['issue_sale_invoice','cancel_sale_invoice','record_sale_payment','record_purchase','record_purchase_payment','record_voucher','record_treasury_transfer','record_expense','receive_maintenance','update_maintenance'],security:['auth_profiles','branch_membership','role_based_access','row_level_security','server_side_validation','atomic_transactions']};
+        window.VOLTECH_SUPABASE_READY=VOLTECH_SUPABASE_READY;
 
         // ===== تشغيل النظام من مصدر بيانات واحد فقط =====
         // لا نستعيد أي حالة قديمة من المفاتيح المنفصلة. في أول تشغيل بعد هذا الإصلاح
